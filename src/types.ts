@@ -9,6 +9,7 @@ export interface UserSession {
 
 export interface Promotion {
   id: string;
+  listing_id?: string | null;
   title: string;
   description?: string | null;
   listing_title?: string | null;
