@@ -43,7 +43,7 @@ export const Header: React.FC<HeaderProps> = ({
             : "bg-transparent text-white border-b border-white/20"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 h-20 sm:h-24 flex items-center justify-between font-sans">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 h-16 sm:h-20 flex items-center justify-between font-sans">
           {/* Search on the Left matching Agota */}
           <div
             onClick={() => handleNav("catalog")}
@@ -143,7 +143,7 @@ export const Header: React.FC<HeaderProps> = ({
                 onClick={() => onOpenAuth("login")}
                 className="hover:text-white transition font-medium tracking-wider text-[11px] uppercase hidden sm:inline-block"
               >
-                Entrar / Aderir
+                Entrar
               </button>
             ) : (
               <div className="flex items-center space-x-3">
@@ -166,12 +166,12 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               onClick={() => handleNav("catalog")}
               className="flex items-center space-x-1 hover:text-white transition"
-              aria-label="Favoritos"
+              aria-label="Ofertas guardadas"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
-              <span className="text-[10px] font-semibold">2</span>
+              <span className="text-[10px] font-semibold">0</span>
             </button>
 
             {/* Cart Bag Icon matching Agota */}
@@ -183,7 +183,7 @@ export const Header: React.FC<HeaderProps> = ({
               <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
               </svg>
-              <span className="text-[10px] font-semibold">4</span>
+              <span className="text-[10px] font-semibold">OF</span>
             </button>
 
             {/* Mobile Hamburger toggle */}
