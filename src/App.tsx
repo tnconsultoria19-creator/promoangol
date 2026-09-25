@@ -16,6 +16,7 @@ import { AdminPortal } from "./components/AdminPortal";
 import { PartnersSection } from "./components/PartnersSection";
 import { MembershipSection } from "./components/MembershipSection";
 import { HowItWorksSection } from "./components/HowItWorksSection";
+import { SavedDrawer } from "./components/SavedDrawer";
 import type { Promotion, UserSession } from "./types";
 
 export default function App() {
@@ -33,10 +34,29 @@ export default function App() {
   const [activeView, setActiveView] = useState<"home" | "catalog" | "partners" | "membership" | "how" | "portal">("home");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
-  // Modals State
+  // Modals & Drawers State
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"login" | "register">("login");
   const [selectedPromo, setSelectedPromo] = useState<Promotion | null>(null);
+
+  // Saved Offers / Wishlist State
+  const [savedPromoIds, setSavedPromoIds] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem("promoangol_saved_promos");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [isSavedDrawerOpen, setIsSavedDrawerOpen] = useState(false);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("promoangol_saved_promos", JSON.stringify(savedPromoIds));
+    } catch (e) {
+      console.error(e);
+    }
+  }, [savedPromoIds]);
 
   // Global Alerts
   const [toastError, setToastError] = useState("");
@@ -257,9 +277,42 @@ export default function App() {
     );
   };
 
+
+
+  // SAVED OFFERS HANDLERS
+  const handleToggleSavePromo = (promo: Promotion) => {
+    setSavedPromoIds((prev) => {
+      const exists = prev.includes(promo.id);
+      if (exists) {
+        setToastSuccess("Oferta removida da sua lista.");
+        return prev.filter((id) => id !== promo.id);
+      } else {
+        setToastSuccess("Oferta guardada na sua lista!");
+        return [...prev, promo.id];
+      }
+    });
+  };
+
+  const handleRemoveSavedPromo = (promoId: string) => {
+    setSavedPromoIds((prev) => prev.filter((id) => id !== promoId));
+    setToastSuccess("Oferta removida.");
+  };
+
+  const handleClearSavedPromos = () => {
+    setSavedPromoIds([]);
+    setToastSuccess("Todas as ofertas guardadas foram removidas.");
+  };
+
   // MEMBER HANDLERS
   const handleConfirmPurchase = async (txId: string, action: "CONFIRM" | "REJECT", reason?: string) => {
     try {
+      if (session?.token === "__PREVIEW__") {
+        setMemberTxList((prev) =>
+          prev.map((t) => (t.id === txId ? { ...t, status: action === "CONFIRM" ? "VERIFIED" : "REJECTED" } : t))
+        );
+        setToastSuccess(action === "CONFIRM" ? "Compra validada! Pontos adicionados." : "Compra rejeitada.");
+        return;
+      }
       await apiCall("/api/member/confirm-purchase", {
         method: "POST",
         body: JSON.stringify({ transaction_id: txId, action, reason }),
@@ -273,6 +326,28 @@ export default function App() {
 
   const handleRequestRedeem = async (listingId: string, points: number) => {
     try {
+      if (session?.token === "__PREVIEW__") {
+        const newRed = {
+          id: "red-" + Date.now(),
+          redemption_number: "RED-" + Math.floor(1000 + Math.random() * 9000),
+          partner_name: "Hotel Alvalade",
+          listing_title: "Desconto Comercial",
+          points_requested: points,
+          cash_amount_kz: 0,
+          status: "REQUESTED",
+        };
+        setMemberRedemptions((prev) => [newRed, ...prev]);
+        setMemberSummary((prev: any) => ({
+          ...prev,
+          balances: {
+            ...prev.balances,
+            available_points: Math.max(0, (prev.balances?.available_points || 0) - points),
+            reserved_points: (prev.balances?.reserved_points || 0) + points,
+          },
+        }));
+        setToastSuccess(`Resgate #${newRed.redemption_number} solicitado com sucesso!`);
+        return;
+      }
       const res = await apiCall("/api/member/redemptions", {
         method: "POST",
         body: JSON.stringify({ listing_id: listingId, points }),
@@ -285,8 +360,68 @@ export default function App() {
     }
   };
 
+  const handleCancelRedeem = async (redId: string) => {
+    const targetRed = memberRedemptions.find((r) => r.id === redId);
+    const refund = targetRed?.points_requested || 0;
+    setMemberRedemptions((prev) => prev.filter((r) => r.id !== redId));
+    setMemberSummary((prev: any) => ({
+      ...prev,
+      balances: {
+        ...prev?.balances,
+        available_points: (prev?.balances?.available_points || 0) + refund,
+        reserved_points: Math.max(0, (prev?.balances?.reserved_points || 0) - refund),
+      },
+    }));
+    setToastSuccess(`Pedido de resgate cancelado. ${refund} pontos devolvidos ao seu saldo!`);
+  };
+
+  const handleClaimInvoice = async (invoiceNumber: string, partnerName: string, amountKz: number) => {
+    const pointsEarned = Math.round(amountKz * 0.1);
+    const newTx = {
+      id: "claim-" + Date.now(),
+      transaction_number: invoiceNumber,
+      partner_name: partnerName,
+      listing_title: `Fatura Comercial #${invoiceNumber}`,
+      amount_paid_kz: amountKz,
+      points_to_release: pointsEarned,
+      status: "PENDING_MEMBER_CONFIRMATION",
+      created_at: new Date().toISOString(),
+    };
+    setMemberTxList((prev) => [newTx, ...prev]);
+    setMemberSummary((prev: any) => ({
+      ...prev,
+      balances: {
+        ...prev?.balances,
+        pending_points: (prev?.balances?.pending_points || 0) + pointsEarned,
+      },
+    }));
+    setToastSuccess(`Fatura registada! +${pointsEarned} pontos adicionados a aguardar confirmação.`);
+  };
+
   const handleRequestTransfer = async (recipientNumber: string, points: number) => {
     try {
+      if (session?.token === "__PREVIEW__") {
+        setMemberTransfersSent((prev) => [
+          {
+            id: "tx-tr-" + Date.now(),
+            recipient_name: "Membro Destinatário",
+            recipient_number: recipientNumber,
+            transfer_number: "TR-" + Math.floor(1000 + Math.random() * 9000),
+            points,
+            created_at: "Hoje",
+          },
+          ...prev,
+        ]);
+        setMemberSummary((prev: any) => ({
+          ...prev,
+          balances: {
+            ...prev.balances,
+            available_points: Math.max(0, (prev.balances?.available_points || 0) - points),
+          },
+        }));
+        setToastSuccess(`Transferência de ${points} pontos enviada para ${recipientNumber}!`);
+        return;
+      }
       const res = await apiCall("/api/member/transfers", {
         method: "POST",
         body: JSON.stringify({ recipient_number: recipientNumber, points }),
@@ -302,6 +437,18 @@ export default function App() {
   // PARTNER HANDLERS
   const handleVerifyMember = async (memberNumber: string) => {
     try {
+      if (session?.token === "__PREVIEW__") {
+        return {
+          member: {
+            id: "preview-m-1",
+            full_name: "Maria Domingos",
+            member_number: memberNumber || "PA-304812",
+            plan_name: "Preferred",
+            available_points: 12500,
+          },
+          promotions: promotions.slice(0, 2),
+        };
+      }
       const data = await apiCall("/api/partner/verify-member", {
         method: "POST",
         body: JSON.stringify({ member_number: memberNumber }),
@@ -315,6 +462,30 @@ export default function App() {
 
   const handleRecordPurchase = async (memberId: string, listingId: string, promotionId: string, amountKz: number) => {
     try {
+      if (session?.token === "__PREVIEW__") {
+        const newTx = {
+          id: "ptx-" + Date.now(),
+          member_name: "Maria Domingos",
+          member_number: "PA-304812",
+          listing_title: "Serviço Registado",
+          transaction_number: "PA-" + Math.floor(20000 + Math.random() * 9000),
+          amount_paid_kz: amountKz,
+          status: "PENDING_MEMBER_CONFIRMATION",
+          created_at: new Date().toISOString(),
+        };
+        setPartnerSummary((prev: any) => ({
+          ...prev,
+          stats: {
+            ...prev?.stats,
+            todayCount: (prev?.stats?.todayCount || 0) + 1,
+            todayVolume: (prev?.stats?.todayVolume || 0) + amountKz,
+            pendingConfirm: (prev?.stats?.pendingConfirm || 0) + 1,
+          },
+          transactions: [newTx, ...(prev?.transactions || [])],
+        }));
+        setToastSuccess(`Venda #${newTx.transaction_number} registada com sucesso!`);
+        return;
+      }
       const res = await apiCall("/api/partner/purchase/record", {
         method: "POST",
         body: JSON.stringify({
@@ -334,6 +505,13 @@ export default function App() {
 
   const handlePartnerRedeemAction = async (redId: string, action: "APPROVE" | "REJECT") => {
     try {
+      if (session?.token === "__PREVIEW__") {
+        setPartnerRedemptions((prev) =>
+          prev.map((r) => (r.id === redId ? { ...r, status: action === "APPROVE" ? "APPROVED" : "REJECTED" } : r))
+        );
+        setToastSuccess(action === "APPROVE" ? "Resgate aprovado! A aguardar autorização do Master Admin." : "Resgate rejeitado.");
+        return;
+      }
       await apiCall("/api/partner/redemptions", {
         method: "POST",
         body: JSON.stringify({ redemption_id: redId, action }),
@@ -347,6 +525,13 @@ export default function App() {
 
   const handleVerifyRedemptionToken = async (redId: string, token: string) => {
     try {
+      if (session?.token === "__PREVIEW__") {
+        setPartnerRedemptions((prev) =>
+          prev.map((r) => (r.id === redId ? { ...r, status: "USED" } : r))
+        );
+        setToastSuccess("Código OTP verificado com sucesso! Benefício entregue ao cliente.");
+        return;
+      }
       await apiCall("/api/partner/redemptions", {
         method: "POST",
         body: JSON.stringify({ redemption_id: redId, token, action: "VERIFY_TOKEN" }),
@@ -361,6 +546,25 @@ export default function App() {
 
   const handleSaveListing = async (listing: { id?: string; title: string; description?: string; base_price_kz: number }) => {
     try {
+      if (session?.token === "__PREVIEW__") {
+        setPartnerSummary((prev: any) => {
+          const current = prev?.listings || [];
+          if (listing.id) {
+            return {
+              ...prev,
+              listings: current.map((l: any) => (l.id === listing.id ? { ...l, ...listing } : l)),
+            };
+          } else {
+            const newL = { ...listing, id: "listing-" + Date.now(), status: "ACTIVE" };
+            return {
+              ...prev,
+              listings: [newL, ...current],
+            };
+          }
+        });
+        setToastSuccess("Serviço adicionado ao preçário com sucesso!");
+        return;
+      }
       await apiCall("/api/partner/listings", {
         method: "POST",
         body: JSON.stringify(listing),
@@ -372,9 +576,29 @@ export default function App() {
     }
   };
 
+  const handleDeleteListing = async (listingId: string) => {
+    setPartnerSummary((prev: any) => ({
+      ...prev,
+      listings: (prev?.listings || []).filter((l: any) => l.id !== listingId),
+    }));
+    setToastSuccess("Serviço removido com sucesso!");
+  };
+
+  const handleCancelPartnerTx = async (txId: string) => {
+    setPartnerSummary((prev: any) => ({
+      ...prev,
+      transactions: (prev?.transactions || []).filter((t: any) => t.id !== txId),
+    }));
+    setToastSuccess("Registo de venda cancelado.");
+  };
+
   // ADMIN HANDLERS
   const handleMemberAction = async (memberId: string, action: "FREEZE" | "UNFREEZE" | "SUSPEND" | "ACTIVATE") => {
     try {
+      if (session?.token === "__PREVIEW__") {
+        setToastSuccess(`Ação ${action} executada com sucesso.`);
+        return;
+      }
       await apiCall("/api/admin/members/action", {
         method: "POST",
         body: JSON.stringify({ id: memberId, action }),
@@ -388,6 +612,16 @@ export default function App() {
 
   const handleCreatePartner = async (partner: any) => {
     try {
+      if (session?.token === "__PREVIEW__") {
+        const newP = {
+          ...partner,
+          id: "partner-" + Date.now(),
+          status: "ACTIVE",
+        };
+        setAdminPartners((prev) => [newP, ...prev]);
+        setToastSuccess("Empresa parceira credenciada!");
+        return;
+      }
       await apiCall("/api/admin/partners", {
         method: "POST",
         body: JSON.stringify(partner),
@@ -400,8 +634,36 @@ export default function App() {
     }
   };
 
+  const handleDeletePartner = async (partnerId: string) => {
+    setAdminPartners((prev) => prev.filter((p) => p.id !== partnerId));
+    setToastSuccess("Empresa parceira removida!");
+  };
+
   const handleCreatePromotion = async (promo: any) => {
     try {
+      if (session?.token === "__PREVIEW__") {
+        const newPromo: Promotion = {
+          id: "promo-" + Date.now(),
+          title: promo.title,
+          description: promo.description || "Oferta criada pelo Master Admin",
+          listing_title: promo.title,
+          base_price_kz: 30000,
+          partner_name: "Parceiro Oficial",
+          partner_category: "Hotelaria",
+          valid_from: "2026-01-01",
+          valid_until: "2027-12-31",
+          delivery_mode: promo.delivery_mode,
+          member_benefit_kz: 5000,
+          commission_mode: "PERCENT_OF_PURCHASE",
+          commission_value: promo.commission_value,
+          benefit_mode: "PERCENT_OF_COMMISSION",
+          benefit_value: promo.benefit_value,
+        };
+        setPromotions((prev) => [newPromo, ...prev]);
+        setAdminPromotions((prev) => [newPromo, ...prev]);
+        setToastSuccess("Campanha promocional publicada com sucesso no catálogo!");
+        return;
+      }
       await apiCall("/api/admin/promotions", {
         method: "POST",
         body: JSON.stringify(promo),
@@ -413,6 +675,12 @@ export default function App() {
       setToastError(err.message);
       throw err;
     }
+  };
+
+  const handleDeletePromotion = async (promoId: string) => {
+    setPromotions((prev) => prev.filter((p) => p.id !== promoId));
+    setAdminPromotions((prev) => prev.filter((p) => p.id !== promoId));
+    setToastSuccess("Promoção removida do catálogo!");
   };
 
   const handleAdminRedeemAction = async (redId: string, action: "APPROVE" | "REJECT") => {
@@ -471,19 +739,21 @@ export default function App() {
     }
   };
 
+  const savedPromotions = promotions.filter((p) => savedPromoIds.includes(p.id));
+
   return (
     <div className="app-shell flex flex-col min-h-screen">
       {/* Toast Feedback Alerts */}
       {toastError && (
-        <div className="bg-red-800 text-white text-xs py-3 px-6 flex justify-between items-center fixed top-0 left-0 right-0 z-50 shadow-md">
+        <div className="bg-red-800 text-white text-sm py-3.5 px-6 flex justify-between items-center fixed top-0 left-0 right-0 z-50 shadow-md">
           <span>{toastError}</span>
-          <button onClick={() => setToastError("")} className="font-bold text-base px-2">×</button>
+          <button onClick={() => setToastError("")} className="font-bold text-lg px-2">×</button>
         </div>
       )}
       {toastSuccess && (
-        <div className="bg-[#357169] text-white text-xs py-3 px-6 flex justify-between items-center fixed top-0 left-0 right-0 z-50 shadow-md">
+        <div className="bg-[#357169] text-white text-sm py-3.5 px-6 flex justify-between items-center fixed top-0 left-0 right-0 z-50 shadow-md">
           <span>{toastSuccess}</span>
-          <button onClick={() => setToastSuccess("")} className="font-bold text-base px-2">×</button>
+          <button onClick={() => setToastSuccess("")} className="font-bold text-lg px-2">×</button>
         </div>
       )}
 
@@ -494,6 +764,8 @@ export default function App() {
         onLogout={handleLogout}
         onNavigate={(view) => setActiveView(view)}
         activeView={activeView}
+        savedCount={savedPromoIds.length}
+        onOpenSaved={() => setIsSavedDrawerOpen(true)}
       />
 
       {/* Main Body */}
@@ -518,10 +790,11 @@ export default function App() {
 
             <CatalogSection
               promotions={promotions}
-              catalogState={catalogState}
-              selectedCategory={selectedCategory}
+              activeCategory={selectedCategory}
+              onSelectCategory={(cat) => setSelectedCategory(cat)}
               onSelectPromotion={(promo) => setSelectedPromo(promo)}
-              onRefresh={fetchCatalog}
+              savedPromoIds={savedPromoIds}
+              onToggleSavePromo={handleToggleSavePromo}
             />
 
             <WelcomeBanner
@@ -541,13 +814,14 @@ export default function App() {
 
         {/* PUBLIC EXPERIENCE: CATALOG */}
         {activeView === "catalog" && (
-          <div className="pt-28">
+          <div className="pt-24">
             <CatalogSection
               promotions={promotions}
-              catalogState={catalogState}
-              selectedCategory={selectedCategory}
+              activeCategory={selectedCategory}
+              onSelectCategory={(cat) => setSelectedCategory(cat)}
               onSelectPromotion={(promo) => setSelectedPromo(promo)}
-              onRefresh={fetchCatalog}
+              savedPromoIds={savedPromoIds}
+              onToggleSavePromo={handleToggleSavePromo}
             />
             <GalleryStrip />
           </div>
@@ -600,11 +874,11 @@ export default function App() {
           <div className={`portal-shell role-${session.role.toLowerCase()}`}>
             {session.token === "__PREVIEW__" && (
               <div className="preview-modebar content-width">
-                <span><strong>PRÉ-VISUALIZAÇÃO</strong> · está a ver a área {session.role === "MEMBER" ? "Cliente" : session.role === "PARTNER_ADMIN" ? "Parceiro" : "Master Admin"} sem palavras-passe.</span>
-                <button type="button" onClick={handleLogout}>Voltar a escolher área</button>
+                <span><strong>PRÉ-VISUALIZAÇÃO ATIVA</strong> · Área: {session.role === "MEMBER" ? "Cliente / Membro" : session.role === "PARTNER_ADMIN" ? "Parceiro Comercial" : "Master Admin PromoAngol"}.</span>
+                <button type="button" onClick={handleLogout}>Escolher outro perfil</button>
               </div>
             )}
-            <div className="pt-6 min-h-[70vh]">
+            <div className="pt-4 min-h-[70vh]">
             {session.role === "MEMBER" && (
               <MemberPortal
                 session={session}
@@ -617,6 +891,8 @@ export default function App() {
                 promotions={promotions}
                 onConfirmPurchase={handleConfirmPurchase}
                 onRequestRedeem={handleRequestRedeem}
+                onCancelRedemption={handleCancelRedeem}
+                onClaimInvoice={handleClaimInvoice}
                 onRequestTransfer={handleRequestTransfer}
                 onRefresh={syncRoleData}
               />
@@ -632,6 +908,8 @@ export default function App() {
                 onPartnerRedeemAction={handlePartnerRedeemAction}
                 onVerifyRedemptionToken={handleVerifyRedemptionToken}
                 onSaveListing={handleSaveListing}
+                onDeleteListing={handleDeleteListing}
+                onCancelTransaction={handleCancelPartnerTx}
                 onRefresh={syncRoleData}
               />
             )}
@@ -649,7 +927,9 @@ export default function App() {
                 adminSettlements={adminSettlements}
                 onMemberAction={handleMemberAction}
                 onCreatePartner={handleCreatePartner}
+                onDeletePartner={handleDeletePartner}
                 onCreatePromotion={handleCreatePromotion}
+                onDeletePromotion={handleDeletePromotion}
                 onAdminRedeemAction={handleAdminRedeemAction}
                 onAdminTransferAction={handleAdminTransferAction}
                 onGenerateSettlement={handleGenerateSettlement}
@@ -664,6 +944,18 @@ export default function App() {
 
       {/* Global Footer */}
       <Footer onNavigate={(view) => setActiveView(view)} />
+
+      {/* Saved Offers Side Drawer */}
+      <SavedDrawer
+        isOpen={isSavedDrawerOpen}
+        onClose={() => setIsSavedDrawerOpen(false)}
+        savedPromotions={savedPromotions}
+        onRemoveSaved={handleRemoveSavedPromo}
+        onClearAll={handleClearSavedPromos}
+        onSelectPromo={(promo) => {
+          setSelectedPromo(promo);
+        }}
+      />
 
       {/* Promotion Detail Modal */}
       <PromotionDetailModal

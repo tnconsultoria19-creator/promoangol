@@ -14,6 +14,8 @@ interface AdminPortalProps {
   onMemberAction: (memberId: string, action: "FREEZE" | "UNFREEZE" | "SUSPEND" | "ACTIVATE") => Promise<void>;
   onCreatePartner: (partner: any) => Promise<void>;
   onCreatePromotion: (promo: any) => Promise<void>;
+  onDeletePromotion?: (promoId: string) => Promise<void>;
+  onDeletePartner?: (partnerId: string) => Promise<void>;
   onAdminRedeemAction: (redId: string, action: "APPROVE" | "REJECT") => Promise<void>;
   onAdminTransferAction: (transferId: string, action: "APPROVE" | "REJECT") => Promise<void>;
   onGenerateSettlement: (partnerId: string) => Promise<void>;
@@ -33,6 +35,8 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
   onMemberAction,
   onCreatePartner,
   onCreatePromotion,
+  onDeletePromotion,
+  onDeletePartner,
   onAdminRedeemAction,
   onAdminTransferAction,
   onGenerateSettlement,
@@ -344,28 +348,44 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
 
           <div className="md:col-span-2 border border-zinc-200 p-6 md:p-8 bg-white space-y-4">
             <h3 className="font-serif text-2xl font-light text-zinc-900">Empresas Parceiras Credenciadas</h3>
-            <div className="divide-y divide-zinc-100 text-xs">
+            <div className="divide-y divide-zinc-100 text-sm">
               {adminPartners.map((p) => (
                 <div key={p.id} className="py-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
                   <div>
-                    <h5 className="font-serif text-base font-medium text-zinc-900">{p.name}</h5>
-                    <span className="text-[10px] text-zinc-400 font-mono">
+                    <h5 className="font-serif text-lg font-medium text-zinc-900">{p.name}</h5>
+                    <span className="text-xs text-zinc-500 font-mono">
                       {p.category} · {p.email || "Sem email"} · {p.phone || "Sem tel"}
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="bg-teal-50 text-teal-800 font-bold px-2.5 py-1 text-[9px] uppercase tracking-wider rounded">
+                    <span className="bg-teal-50 text-teal-800 font-bold px-2.5 py-1 text-xs uppercase tracking-wider rounded border border-teal-200">
                       {p.status}
                     </span>
                     <button
                       onClick={() => onGenerateSettlement(p.id)}
-                      className="border border-zinc-300 hover:border-zinc-800 text-zinc-800 px-3 py-1.5 text-[10px] uppercase font-semibold transition"
+                      className="border border-zinc-300 hover:border-zinc-800 text-zinc-800 px-3 py-1.5 text-xs uppercase font-semibold transition"
                     >
-                      Fechar Mês (Liquidação)
+                      Liquidação
                     </button>
+                    {onDeletePartner && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (window.confirm(`Deseja remover a empresa parceira "${p.name}"?`)) {
+                            onDeletePartner(p.id);
+                          }
+                        }}
+                        className="btn-remove-sm"
+                      >
+                        Remover
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}
+              {adminPartners.length === 0 && (
+                <p className="py-6 text-sm text-zinc-400 italic">Nenhum parceiro registado.</p>
+              )}
             </div>
           </div>
         </div>
@@ -458,23 +478,41 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
 
           <div className="md:col-span-2 border border-zinc-200 p-6 md:p-8 bg-white space-y-4">
             <h3 className="font-serif text-2xl font-light text-zinc-900">Promoções em Vigor</h3>
-            <div className="divide-y divide-zinc-100 text-xs">
+            <div className="divide-y divide-zinc-100 text-sm">
               {adminPromotions.map((p) => (
                 <div key={p.id} className="py-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
                   <div>
-                    <h5 className="font-serif text-base font-medium text-zinc-900">{p.title}</h5>
-                    <p className="text-zinc-500 text-[11px]">
-                      Parceiro: <strong>{p.partner_name}</strong> · Serviço: {p.listing_title}
+                    <h5 className="font-serif text-lg font-medium text-zinc-900">{p.title}</h5>
+                    <p className="text-zinc-600 text-xs mt-0.5">
+                      Parceiro: <strong className="text-zinc-800">{p.partner_name}</strong> · Serviço: {p.listing_title}
                     </p>
-                    <p className="text-zinc-400 font-mono text-[10px]">
-                      Comissão: {p.commission_value}% · Retorno ao Membro: {formatKz(p.member_benefit_kz)} ({p.delivery_mode})
+                    <p className="text-zinc-500 font-mono text-xs mt-0.5">
+                      Comissão: {p.commission_value}% · Retorno ao Membro: <strong>{formatKz(p.member_benefit_kz)}</strong> ({p.delivery_mode === "DISCOUNT" ? "Desconto" : "Pontos"})
                     </p>
                   </div>
-                  <span className="bg-teal-50 text-teal-800 font-bold px-2.5 py-1 text-[9px] uppercase tracking-wider rounded">
-                    {p.status}
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <span className="bg-teal-50 text-teal-800 font-bold px-2.5 py-1 text-xs uppercase tracking-wider rounded border border-teal-200">
+                      {p.status || "Ativa"}
+                    </span>
+                    {onDeletePromotion && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (window.confirm(`Deseja remover a promoção "${p.title}"?`)) {
+                            onDeletePromotion(p.id);
+                          }
+                        }}
+                        className="btn-remove-sm"
+                      >
+                        Remover Oferta
+                      </button>
+                    )}
+                  </div>
                 </div>
               ))}
+              {adminPromotions.length === 0 && (
+                <p className="py-6 text-sm text-zinc-400 italic">Nenhuma promoção registada.</p>
+              )}
             </div>
           </div>
         </div>

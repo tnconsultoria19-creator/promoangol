@@ -18,6 +18,11 @@ export interface Promotion {
   partner_category?: string | null;
   delivery_mode?: "POINTS" | "DISCOUNT" | string | null;
   member_benefit_kz?: number | null;
+  commission_mode?: string | null;
+  commission_value?: number | null;
+  benefit_mode?: string | null;
+  benefit_value?: number | null;
+  status?: string | null;
   valid_from?: string | null;
   valid_until?: string | null;
 }
