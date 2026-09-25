@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AGOTA - Minimalist eCommerce Template</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Jost, Playfair Display, and Great Vibes for the decorative script -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&amp;family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&amp;family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Jost', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+            script: ['Great Vibes', 'cursive'],
+          },
+          colors: {
+            brand: {
+              gold: '#cba557',
+              red: '#e53935',
+              dark: '#1c1c1c',
+              gray: '#767676',
+              lightGray: '#f8f8f8',
+              card1: '#a66258',
+              card2: '#357169',
+              card3: '#1a2b49'
+            }
+          }
+        }
+      }
+    }
+  </script>
+<!-- Custom Typography & Layout Tweaks -->
+<style data-purpose="typography">
+    body {
+      font-family: 'Jost', sans-serif;
+      color: #333333;
+      background-color: #ffffff;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-script {
+      font-family: 'Great Vibes', cursive;
+    }
+  </style>
+<style data-purpose="custom-elements">
+    /* Subtle transitions and hover effects */
+    .product-image-wrap:hover img {
+      transform: scale(1.04);
+    }
+    .countdown-badge {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+  </style>
+</head>
+<body class="text-neutral-800">
+<!-- BEGIN: MainHeader -->
+<header class="w-full absolute top-0 left-0 z-50 border-b border-white/20 bg-transparent transition-all">
+<div class="max-w-7xl mx-auto px-6 sm:px-8 h-24 flex items-center justify-between">
+<!-- Search on the Left -->
+<div class="flex items-center space-x-2 text-white/90 hover:text-white cursor-pointer transition text-sm">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<circle cx="11" cy="11" r="8"></circle>
+<line x1="21" x2="16.65" y1="21" y2="16.65"></line>
+</svg>
+<span class="tracking-wide">Search</span>
+</div>
+<!-- Center Nav Links + Prominent Brand Logo -->
+<nav class="hidden md:flex items-center space-x-10">
+<a class="text-white text-sm tracking-wider font-medium border-b-2 border-white pb-1" href="#">Home</a>
+<a class="text-white/80 hover:text-white text-sm tracking-wider transition" href="#">Shop</a>
+<a class="text-white/80 hover:text-white text-sm tracking-wider transition" href="#">About</a>
+<!-- Central Logo -->
+<a class="text-2xl lg:text-3xl font-bold tracking-[0.25em] text-white uppercase font-sans px-4" href="#">
+          AGOTA
+        </a>
+<a class="text-white/80 hover:text-white text-sm tracking-wider transition" href="#">Blog</a>
+<a class="text-white/80 hover:text-white text-sm tracking-wider transition" href="#">Contact</a>
+<a class="text-white/80 hover:text-white text-sm tracking-wider transition" href="#">Pages</a>
+</nav>
+<!-- Right Account, Wishlist & Cart -->
+<div class="flex items-center space-x-6 text-white/90 text-sm">
+<a class="hover:text-white transition hidden sm:inline-block" href="#">Login / register</a>
+<!-- Wishlist -->
+<a class="flex items-center space-x-1 hover:text-white transition" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+</svg>
+<span class="text-xs font-semibold">2</span>
+</a>
+<!-- Cart Bag -->
+<a class="flex items-center space-x-1 hover:text-white transition" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+</svg>
+<span class="text-xs font-semibold">2</span>
+</a>
+</div>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: HeroSection -->
+<section class="relative w-full min-h-[700px] lg:min-h-[820px] bg-[#617482] flex items-center overflow-hidden">
+<!-- Hero Background Tone & Composition Mockup -->
+<div class="absolute inset-0 bg-gradient-to-r from-[#4d606f] via-[#5d7180] to-[#718696] opacity-90"></div>
+<!-- 3D Pedestals / Audio Speakers Composition Graphics -->
+<div class="absolute right-0 bottom-0 w-full lg:w-3/5 h-full pointer-events-none flex items-end justify-end">
+<!-- Terracotta block & Speaker -->
+<div class="relative w-[550px] lg:w-[700px] h-[580px] mr-0 mb-0">
+<!-- Blue top speaker on block -->
+<div class="absolute top-10 left-12 w-48 h-36 bg-[#4c7a8f] rounded-3xl shadow-2xl p-4 flex flex-col items-center justify-center transform -rotate-1 border border-white/10">
+<div class="w-2 h-6 bg-neutral-300 absolute -top-4 rounded-full"></div>
+<div class="w-24 h-24 rounded-full bg-[#f4b39e] shadow-inner flex items-center justify-center border-4 border-[#3a6274]"></div>
+</div>
+<!-- Terracotta lower speaker on pink pedestal -->
+<div class="absolute bottom-6 left-16 w-52 h-40 bg-[#ba5d45] rounded-3xl shadow-2xl p-4 flex items-center justify-center border border-white/20">
+<div class="w-28 h-28 rounded-full bg-[#dec0b2] shadow-inner border-4 border-[#9a4b36]"></div>
+</div>
+<!-- White modern speaker on white block -->
+<div class="absolute bottom-24 right-16 w-60 h-48 bg-white rounded-3xl shadow-2xl p-4 flex items-center justify-center">
+<div class="w-2 h-8 bg-neutral-200 absolute -top-5 rounded-full"></div>
+<div class="w-32 h-32 rounded-full bg-[#e8a892] shadow-inner border-4 border-neutral-100"></div>
+</div>
+<!-- Architectural 3D Blocks -->
+<div class="absolute bottom-0 left-0 w-80 h-32 bg-[#a3513e] opacity-90"></div>
+<div class="absolute bottom-0 right-0 w-96 h-56 bg-[#f7f7f7] shadow-xl"></div>
+</div>
+</div>
+<!-- Hero Content -->
+<div class="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 py-32 w-full flex flex-col justify-center">
+<div class="max-w-xl text-white">
+<!-- Subtag -->
+<div class="flex items-center space-x-3 mb-4">
+<span class="w-6 h-[2px] bg-yellow-400"></span>
+<span class="text-xs uppercase tracking-[0.2em] font-medium text-yellow-300">Featured Products</span>
+</div>
+<!-- Headline -->
+<h1 class="text-6xl sm:text-7xl lg:text-8xl font-normal tracking-tight leading-none mb-6">
+          Outset
+        </h1>
+<!-- Subtitle -->
+<p class="text-sm sm:text-base text-neutral-200/90 leading-relaxed font-light mb-10 max-w-md">
+          Form is designed by Agota Store and is part of the Form series. It is an armless modern chair with great back support.
+        </p>
+<!-- CTA Button -->
+<a class="inline-block bg-white text-neutral-900 px-9 py-3.5 text-xs font-semibold tracking-[0.15em] uppercase hover:bg-neutral-100 transition shadow-sm" href="#">
+          Explore
+        </a>
+</div>
+<!-- Carousel Pagination Dots -->
+<div class="flex items-center space-x-2 mt-20">
+<span class="w-2 h-2 rounded-full bg-white/40 cursor-pointer"></span>
+<span class="w-2 h-2 rounded-full bg-white cursor-pointer"></span>
+<span class="w-2 h-2 rounded-full bg-white/40 cursor-pointer"></span>
+</div>
+</div>
+</section>
+<!-- END: HeroSection -->
+<!-- BEGIN: FeatureCardsSection -->
+<section class="max-w-7xl mx-auto px-6 sm:px-8 py-20">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+<!-- Card 1: Terracotta / Lifestyle -->
+<div class="relative overflow-hidden bg-[#a65d50] text-white h-72 sm:h-80 p-8 flex flex-col justify-between group">
+<!-- Background Art Shape & Plant -->
+<div class="absolute right-0 bottom-0 w-1/2 h-full pointer-events-none flex items-end justify-end">
+<div class="w-36 h-48 rounded-t-full bg-[#c97b6c] opacity-80 mr-4 mb-2 flex items-center justify-center">
+<svg class="w-24 h-24 text-rose-100 transform -rotate-12" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"></path>
+</svg>
+</div>
+</div>
+<div class="relative z-10">
+<span class="text-xs uppercase tracking-widest text-rose-200 block mb-1">Featured Item</span>
+<h3 class="text-3xl font-light tracking-tight">Lifestyle</h3>
+</div>
+<div class="relative z-10">
+<a class="text-xs tracking-wider uppercase inline-block border-b border-white pb-1 font-medium hover:text-neutral-200" href="#">
+            Explore Items
+          </a>
+</div>
+</div>
+<!-- Card 2: Green / Outdoor -->
+<div class="relative overflow-hidden bg-[#2d6b63] text-white h-72 sm:h-80 p-8 flex flex-col justify-between group">
+<!-- Background Art Sculptural Shape -->
+<div class="absolute right-0 bottom-0 w-1/2 h-full pointer-events-none flex items-end justify-end">
+<div class="w-32 h-32 rounded-full bg-[#1b4b45] -mr-4 -mb-4"></div>
+<div class="w-28 h-40 bg-[#21574f] absolute right-6 bottom-0 rounded-t-3xl"></div>
+</div>
+<div class="relative z-10">
+<span class="text-xs uppercase tracking-widest text-emerald-200 block mb-1">Special Decor</span>
+<h3 class="text-3xl font-light tracking-tight">Outdoor</h3>
+</div>
+<div class="relative z-10">
+<a class="text-xs tracking-wider uppercase inline-block border-b border-white pb-1 font-medium hover:text-neutral-200" href="#">
+            Explore Items
+          </a>
+</div>
+</div>
+<!-- Card 3: Deep Navy / Unique Life -->
+<div class="relative overflow-hidden bg-[#162744] text-white h-72 sm:h-80 p-8 flex flex-col justify-between group">
+<!-- Background Architectural Table Angle Mock -->
+<div class="absolute right-0 bottom-0 w-1/2 h-full pointer-events-none flex items-end justify-end">
+<div class="w-40 h-40 border-[16px] border-neutral-300 rounded-3xl transform rotate-45 translate-x-12 translate-y-12 opacity-80"></div>
+</div>
+<div class="relative z-10">
+<span class="text-xs uppercase tracking-widest text-blue-200 block mb-1">Top Table</span>
+<h3 class="text-3xl font-light tracking-tight">Unique Life</h3>
+</div>
+<div class="relative z-10">
+<a class="text-xs tracking-wider uppercase inline-block border-b border-white pb-1 font-medium hover:text-neutral-200" href="#">
+            Explore Items
+          </a>
+</div>
+</div>
+</div>
+</section>
+<!-- END: FeatureCardsSection -->
+<!-- BEGIN: BestsellersSection -->
+<section class="max-w-7xl mx-auto px-6 sm:px-8 py-14">
+<!-- Header -->
+<div class="text-center max-w-2xl mx-auto mb-16">
+<h2 class="text-3xl sm:text-4xl font-normal text-neutral-800 tracking-tight mb-3">
+        Bestsellers Products
+      </h2>
+<p class="text-neutral-500 text-xs sm:text-sm font-light">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore.
+      </p>
+</div>
+<!-- Product Grid (4 items per row) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10 mb-16">
+<!-- Product 1 -->
+<div class="relative flex flex-col items-center text-center group">
+<!-- Sale Badge -->
+<span class="absolute top-2 left-2 w-8 h-8 rounded-full bg-[#f0483e] text-white text-[10px] font-semibold flex items-center justify-center z-20 uppercase tracking-tighter">
+          Sale
+        </span>
+<div class="relative w-full h-72 bg-white flex items-center justify-center p-4 product-image-wrap overflow-hidden">
+<img alt="Form Armchair Walnut Base" class="max-h-60 object-contain transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuByIyu_hzzSE_PellYXZyPgnqpUSFY-iWv6RmO-zVEK0FX9eXnAlbqFp_utSyz7zbu7XlUflLHbJB8tIF767JkMp4eg_1J7XeXqazLc4uhVni24nQrZdGG74T1Tl6pkycZewcoHXA2THHsQk3siVogMWw_hnKgGEHj4G6H2-smQ5KMQRrUQGxYQgrlrtkhfuvUWWZju1xkudsIY62qV7mh3PJ1z5zppXjj8YIHxxfE8BBByQKzj88A"/>
+<!-- Countdown Timer Pill -->
+<div class="absolute bottom-2 bg-white px-3 py-1 rounded-full shadow border border-neutral-100 flex items-center space-x-2 text-[9px] font-semibold tracking-wider text-neutral-600 countdown-badge">
+<div>0 <span class="font-light text-[8px] text-neutral-400">DAYS</span></div>
+<span>:</span>
+<div>0 <span class="font-light text-[8px] text-neutral-400">HOUR</span></div>
+<span>:</span>
+<div>00 <span class="font-light text-[8px] text-neutral-400">MIN</span></div>
+<span>:</span>
+<div>00 <span class="font-light text-[8px] text-neutral-400">SEC</span></div>
+</div>
+</div>
+<div class="mt-4">
+<h3 class="text-xs sm:text-sm font-medium text-neutral-700 hover:text-black cursor-pointer mb-1">
+            Form Armchair Walnut Base
+          </h3>
+<div class="text-xs">
+<span class="font-bold text-neutral-900">$299.00</span>
+<span class="text-neutral-400 line-through ml-1.5 text-[11px]">$329.00</span>
+</div>
+</div>
+</div>
+<!-- Product 2 -->
+<div class="relative flex flex-col items-center text-center group">
+<div class="relative w-full h-72 bg-white flex items-center justify-center p-4 product-image-wrap overflow-hidden">
+<img alt="Utopia Towels Kitchen" class="max-h-60 object-contain transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8FU3bg_cLXTO0TN-NtGKhCqUNIN4RFoggrSjAwAvWXtBL-Mgave8GbtejJ00ppVsZPChmqviodghuzFCytfUw7b-8qrHfEVedX0Y1SOdyYr2aNL7kGfBgGI0j_LCK41rU4iWPdkXLG9IfUs1lO8cgpximzymeAddKFI2xMf65Y58m6oOM4hs06-LMDWNPd0F1nMcdCVBetZ5D_ac9PeGhslOofFMwt3hecrKhDFDcTpv7kA8vpus"/>
+</div>
+<div class="mt-4">
+<h3 class="text-xs sm:text-sm font-medium text-neutral-700 hover:text-black cursor-pointer mb-1">
+            Utopia Towels Kitchen
+          </h3>
+<div class="text-xs font-bold text-neutral-900 mb-2">
+            $862.00
+          </div>
+<!-- Color Swatches -->
+<div class="flex items-center justify-center space-x-1.5">
+<span class="w-2 h-2 rounded-full bg-blue-900 inline-block"></span>
+<span class="w-2 h-2 rounded-full bg-indigo-500 inline-block"></span>
+</div>
+</div>
+</div>
+<!-- Product 3 -->
+<div class="relative flex flex-col items-center text-center group">
+<div class="relative w-full h-72 bg-white flex items-center justify-center p-4 product-image-wrap overflow-hidden">
+<img alt="Organic Chair High black" class="max-h-60 object-contain transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCriBrEMuZeuQUS1Yu0s8sEd4Cb6a1MkC-GH_4IffbEaTxtUJSzrE4whw5gXg5o374t71i5ZI8M1Hn5x2JzJIWv_6iLz-LMxn147UQzL2EA0kSseoTb9wQg_h8yFXlHsn9jFHmY4glileMWynhgiwCeaiWhylA7TAe3Wwn47Fcnr7SnTK3U9G-fMA_AArb6KFW_OOLA0FiTQuJpER2yuaEYpL8vOHbcP-JbzmtnBdx3_V_GdirvNYg"/>
+</div>
+<div class="mt-4">
+<h3 class="text-xs sm:text-sm font-medium text-neutral-700 hover:text-black cursor-pointer mb-1">
+            Organic Chair High black
+          </h3>
+<div class="text-xs font-bold text-neutral-900">
+            $1,098.00
+          </div>
+</div>
+</div>
+<!-- Product 4 -->
+<div class="relative flex flex-col items-center text-center group">
+<div class="relative w-full h-72 bg-white flex items-center justify-center p-4 product-image-wrap overflow-hidden">
+<img alt="Organic Chair High White" class="max-h-60 object-contain transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAslfQ1RWzBztjEFSz1-x7JGnE_eKTEx03O0FQAXf8rLTs6iwhZQVJG4UAuFnAfC-C7wXqD-5LYMesoo9s7NYJgEE_TM5bX7_pzGBpKqVHKvPHsTw7_7ZZkmnM4Tub45mWFuXLn0MIz40IZhx9In6Sei5w20lx6nHY9fxkuCNZEgTJ8boVbwhyoZ81qF3Eq9PJSfL1wiE7YBqqd6ffBn2KdWw96lrZsIldqfT3vAd0SE8dwx-JVrEw"/>
+</div>
+<div class="mt-4">
+<h3 class="text-xs sm:text-sm font-medium text-neutral-700 hover:text-black cursor-pointer mb-1">
+            Organic Chair High White
+          </h3>
+<div class="text-xs font-bold text-neutral-900 mb-2">
+            $96.00
+          </div>
+<!-- Color Swatches -->
+<div class="flex items-center justify-center space-x-1.5">
+<span class="w-2 h-2 rounded-full bg-blue-950 inline-block"></span>
+<span class="w-2 h-2 rounded-full bg-amber-600 inline-block"></span>
+</div>
+</div>
+</div>
+<!-- Product 5 (Row 2) -->
+<div class="relative flex flex-col items-center text-center group">
+<div class="relative w-full h-72 bg-white flex items-center justify-center p-4 product-image-wrap overflow-hidden">
+<img alt="Bottle Grinder with Steel Lid" class="max-h-60 object-contain transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2OEhhUsEC_U0da3LGUR8b8n3jNNRI1P5BPW6cpFNxtm4wMNWjU63-UV-G4Nu-EddNEm2K2Ujc2qMYMx0jlI5qv_x0yifQnNbbnjr8chGE7Zu4UqjFDAtCQ1RTtk_Qpromag9ANoV1aUWnANR4-tFEpLiQ1rDXDRRnxypBmGp2mINejiVOeOaeA-oMw3c5YmJPvRMPRRcwvgf0HXOxM0_ZqP2QxczYQFr2aSLVM0MsnnaNitNBEDw"/>
+</div>
+<div class="mt-4">
+<h3 class="text-xs sm:text-sm font-medium text-neutral-700 hover:text-black cursor-pointer mb-1">
+            Bottle Grinder with Steel Lid
+          </h3>
+<div class="text-xs font-bold text-neutral-900 mb-2">
+            $396.00
+          </div>
+<!-- Color Swatches -->
+<div class="flex items-center justify-center space-x-1.5">
+<span class="w-2 h-2 rounded-full bg-teal-600 inline-block"></span>
+<span class="w-2 h-2 rounded-full bg-orange-400 inline-block"></span>
+</div>
+</div>
+</div>
+<!-- Product 6 -->
+<div class="relative flex flex-col items-center text-center group">
+<div class="relative w-full h-72 bg-white flex items-center justify-center p-4 product-image-wrap overflow-hidden">
+<img alt="Antique Chinese Armchairs" class="max-h-60 object-contain transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbwYZvE0I1JQwb-2dsIVv7f5H10doPsF3nn_DRYIvPyOhaE4g4QwLK-aHEbksgzkRRouaA6jfGD33V5MSsQXwHg-15d-V-rYSxjx1DuxEw50spBw95MBRmdI0Fu-a8QL3J2HHkrSLM8aUsLQjbW3TsBE-zLaycswPjQ3wPUX6CplySq53sXvuy5K-BgDoJrQNEHNDa7FSlMLA0DW2TuxWCSAs5Bo2jxjrJOmAvs4RruUDazRR6Th8"/>
+</div>
+<div class="mt-4">
+<h3 class="text-xs sm:text-sm font-medium text-neutral-700 hover:text-black cursor-pointer mb-1">
+            Antique Chinese Armchairs
+          </h3>
+<div class="text-xs font-bold text-neutral-900">
+            $196.00
+          </div>
+</div>
+</div>
+<!-- Product 7 -->
+<div class="relative flex flex-col items-center text-center group">
+<div class="relative w-full h-72 bg-white flex items-center justify-center p-4 product-image-wrap overflow-hidden">
+<img alt="Living Room Lighting" class="max-h-60 object-contain transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoN979QBMSJ0LXT46F0sjPnEbB6t_pjoPuGeiEoNP6vkKNfy7-GCYIt5qga6vrMVVSHXIN2OXLX9WWKqyvZRaMsLoeQAEQ_fr0HUF806AOuxH_RJ2JW_YEu143gVcXVqp7tmSMFChWYBbX5WIyRIYFsHt1-74Ip_KN40H8bZqX7CK-ha6DNSwwZRlF3Dx_3QbxE1FeV-Hd20rgDGXOeO7bjDABuk7hT9nSKAqi1iTBxFJPHNAzs38"/>
+</div>
+<div class="mt-4">
+<h3 class="text-xs sm:text-sm font-medium text-neutral-700 hover:text-black cursor-pointer mb-1">
+            Living Room Lighting
+          </h3>
+<div class="text-xs font-bold text-neutral-900 mb-2">
+            $262.00
+          </div>
+<!-- Color Swatches -->
+<div class="flex items-center justify-center space-x-1.5">
+<span class="w-2 h-2 rounded-full bg-blue-800 inline-block"></span>
+<span class="w-2 h-2 rounded-full bg-amber-500 inline-block"></span>
+</div>
+</div>
+</div>
+<!-- Product 8 -->
+<div class="relative flex flex-col items-center text-center group">
+<!-- Sale Badge -->
+<span class="absolute top-2 left-2 w-8 h-8 rounded-full bg-[#f0483e] text-white text-[10px] font-semibold flex items-center justify-center z-20 uppercase tracking-tighter">
+          Sale
+        </span>
+<div class="relative w-full h-72 bg-white flex items-center justify-center p-4 product-image-wrap overflow-hidden">
+<img alt="Organic Chair High back" class="max-h-60 object-contain transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4pEuljXiG_9GfuggxchKaqRI5Vzg5lkqveW8g6RhTKkyd6oWeVqQ19J8UTn00ORKZApRguQiURKoTh88v-mIUDht-Xk4U9gfFmacd6vD_qDb7ySKN2CcK0u4KvZ7Rb73UWRv90_gZu9qNWMI1AUPPE17ceGwt7BYSY0KIdtucLa7X03ZTojsdoizIaF35NtfXVo3jlyik_wH2jPvmQmyaslS6IHTSkicPHvLYOEqdVG94DtoCoGw"/>
+<!-- Countdown Timer Pill -->
+<div class="absolute bottom-2 bg-white px-3 py-1 rounded-full shadow border border-neutral-100 flex items-center space-x-2 text-[9px] font-semibold tracking-wider text-neutral-600 countdown-badge">
+<div>0 <span class="font-light text-[8px] text-neutral-400">DAYS</span></div>
+<span>:</span>
+<div>0 <span class="font-light text-[8px] text-neutral-400">HOUR</span></div>
+<span>:</span>
+<div>00 <span class="font-light text-[8px] text-neutral-400">MIN</span></div>
+<span>:</span>
+<div>00 <span class="font-light text-[8px] text-neutral-400">SEC</span></div>
+</div>
+</div>
+<div class="mt-4">
+<h3 class="text-xs sm:text-sm font-medium text-neutral-700 hover:text-black cursor-pointer mb-1">
+            Organic Chair High back
+          </h3>
+<div class="text-xs">
+<span class="font-bold text-neutral-900">$1,139.60</span>
+<span class="text-neutral-400 line-through ml-1.5 text-[11px]">$1,366.00</span>
+</div>
+</div>
+</div>
+</div>
+<!-- View All Button -->
+<div class="text-center">
+<a class="inline-block border border-neutral-300 hover:border-neutral-900 text-neutral-700 hover:text-neutral-900 px-8 py-3 text-xs tracking-widest font-medium uppercase transition" href="#">
+        All Product
+      </a>
+</div>
+</section>
+<!-- END: BestsellersSection -->
+<!-- BEGIN: WelcomeCalloutSection -->
+<section class="relative w-full min-h-[550px] lg:min-h-[620px] flex items-center justify-center text-center overflow-hidden">
+<!-- Dark Forest Lake Background Image -->
+<img alt="Welcome forest cabin background" class="absolute inset-0 w-full h-full object-cover object-center filter brightness-50 contrast-125" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAL7SRrDUTvj-04CyEUmRuJluEVfcuMAeglqb-6eAHiK5--R-fWmGV9L8znXb2Mnsr5YIDFOknyFnd-7hE1lT31Tp6YunM4YFkb0vxoCeK7-8BQuHXyQgBiPZ96ISGn76NdN1t03coUjoD7RE28-3vGHbqxx1ugQ14j8kQu9zOin7FbMop1wAARkcxQH5tGkcBIt0YxHbwRKOAA7jRK5EOhW4LeEOvMNlZuW9MbQHE5JUA2nCOruYc"/>
+<div class="relative z-10 max-w-4xl mx-auto px-6 py-20 text-white flex flex-col items-center">
+<!-- Calligraphic Welcome Headline -->
+<h2 class="text-7xl sm:text-8xl md:text-9xl font-script tracking-normal text-white mb-6 select-none leading-none">
+        Welcome
+      </h2>
+<!-- Subtitle Description -->
+<p class="text-xs sm:text-sm md:text-base font-light text-neutral-200 tracking-wide max-w-2xl leading-relaxed mb-10">
+        Agota Store Is A Premium Templates Theme With Advanced Admin Module. It's Extremely Customizable, Easy To Use And Fully Responsive And Retina Ready.
+      </p>
+<!-- White Box Outline CTA -->
+<a class="inline-block bg-white text-neutral-900 hover:bg-neutral-100 px-10 py-3.5 text-xs font-medium tracking-widest uppercase transition shadow-md" href="#">
+        Explore Items
+      </a>
+</div>
+</section>
+<!-- END: WelcomeCalloutSection -->
+<!-- BEGIN: ValuePropositionsSection -->
+<section class="w-full bg-[#111111] text-white py-16 border-b border-neutral-800">
+<div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+<!-- Feature 1 -->
+<div class="flex flex-col items-center">
+<div class="w-12 h-12 mb-4 text-neutral-300 flex items-center justify-center">
+<svg class="w-10 h-10 stroke-[1.2]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="10"></circle>
+<line x1="2" x2="22" y1="12" y2="12"></line>
+<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+</svg>
+</div>
+<h4 class="text-sm font-medium tracking-wider mb-2">Fast Delivery</h4>
+<p class="text-neutral-400 text-xs leading-relaxed max-w-xs font-light">
+          All the generators on the Internet tend to repeat predefined chunks as necessary making this the first true.
+        </p>
+</div>
+<!-- Feature 2 -->
+<div class="flex flex-col items-center">
+<div class="w-12 h-12 mb-4 text-neutral-300 flex items-center justify-center">
+<svg class="w-10 h-10 stroke-[1.2]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="10"></circle>
+<polyline points="12 6 12 12 16 14"></polyline>
+<text fill="currentColor" font-size="8" font-weight="bold" stroke="none" text-anchor="middle" x="12" y="15">24</text>
+</svg>
+</div>
+<h4 class="text-sm font-medium tracking-wider mb-2">Online Support</h4>
+<p class="text-neutral-400 text-xs leading-relaxed max-w-xs font-light">
+          All the generators on the Internet tend to repeat predefined chunks as necessary making this the first true.
+        </p>
+</div>
+<!-- Feature 3 -->
+<div class="flex flex-col items-center">
+<div class="w-12 h-12 mb-4 text-neutral-300 flex items-center justify-center">
+<svg class="w-10 h-10 stroke-[1.2]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<circle cx="12" cy="8" r="4"></circle>
+<path d="M19 14v1a3 3 0 0 1-3 3h-8a3 3 0 0 1-3-3v-1"></path>
+<path d="M12 6v4m-2-2h4"></path>
+</svg>
+</div>
+<h4 class="text-sm font-medium tracking-wider mb-2">Free Return</h4>
+<p class="text-neutral-400 text-xs leading-relaxed max-w-xs font-light">
+          All the generators on the Internet tend to repeat predefined chunks as necessary making this the first true.
+        </p>
+</div>
+</div>
+</section>
+<!-- END: ValuePropositionsSection -->
+<!-- BEGIN: BlogSection -->
+<section class="max-w-7xl mx-auto px-6 sm:px-8 py-24">
+<!-- Header -->
+<div class="text-center max-w-2xl mx-auto mb-16">
+<h2 class="text-3xl sm:text-4xl font-normal text-neutral-800 tracking-tight mb-3">
+        Our Blog Posts
+      </h2>
+<p class="text-neutral-500 text-xs sm:text-sm font-light">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore.
+      </p>
+</div>
+<!-- 3 Column Blog Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
+<!-- Article 1 -->
+<article class="flex flex-col">
+<div class="w-full h-64 overflow-hidden mb-5">
+<img alt="Supt In Qui Officia Deserunt" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDK7uRXBwf5RoxYA1KuDPIzvdRNXGnBEJUl-KVlgZ8PU7NP7vaUgI3_6OBfeQTkX_g12jmJJ4QC_TIjC7kedijGOSDe6fljq2Vpf_OZ6bmzkRZTuJBUzCz3ErUdE1vN0wbiVkNv2E90Dm6ud_L0c0nTQgbasksx9UDy7FbYK7_8lcP0rVHkac4Wyhzf_IZsdr3rzwDzlHfzAcXmswVW6xstIslWkRM5Tw3KR-2LY60C_QMcw0iOc34"/>
+</div>
+<div class="text-xs text-neutral-400 mb-2">
+          Post date: <span class="text-[#357169] font-medium">01 nov, 2020</span>
+</div>
+<h3 class="text-base font-medium text-neutral-800 hover:text-black mb-3 cursor-pointer">
+          Supt In Qui Officia Deserunt
+        </h3>
+<p class="text-xs text-neutral-500 leading-relaxed font-light mb-6 flex-grow">
+          It is accompanied by a case that can contain up to three different diffusers and can be used for dry ....
+        </p>
+<div>
+<a class="inline-block border border-neutral-300 hover:border-neutral-800 text-neutral-700 hover:text-neutral-900 px-5 py-2 text-[11px] font-medium tracking-wider uppercase transition" href="#">
+            Continue Reading
+          </a>
+</div>
+</article>
+<!-- Article 2 -->
+<article class="flex flex-col">
+<div class="w-full h-64 overflow-hidden mb-5">
+<img alt="How Wear The Summer Style" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVnZ_q145Aj_8h9VKvIk8Wjkl2BT8SHFqHz8fT89kFJlSQiNzv3xGYZlTRaG_iiGcFQtDmLdATUHy2TGDWSRJ2v3I3U2UxMJbGJb9gxHKz2v9y2ZIZCWu6WUpnUBdldKdSmsO4dgWP2GoX8kDGTUD12fAX8I5uwDavUj1j9s3bhDbq2w8B6rYGA6dIXLp6NJg9xuXv1lWk2ohHO31LE-mqUGx0tTHu0QlvXMnKW7oNVYBY0OVK_Bw"/>
+</div>
+<div class="text-xs text-neutral-400 mb-2">
+          Post date: <span class="text-[#357169] font-medium">01 nov, 2020</span>
+</div>
+<h3 class="text-base font-medium text-neutral-800 hover:text-black mb-3 cursor-pointer">
+          How Wear The Summer Style
+        </h3>
+<p class="text-xs text-neutral-500 leading-relaxed font-light mb-6 flex-grow">
+          It is accompanied by a case that can contain up to three different diffusers and can be used for dry ....
+        </p>
+<div>
+<a class="inline-block border border-neutral-300 hover:border-neutral-800 text-neutral-700 hover:text-neutral-900 px-5 py-2 text-[11px] font-medium tracking-wider uppercase transition" href="#">
+            Continue Reading
+          </a>
+</div>
+</article>
+<!-- Article 3 -->
+<article class="flex flex-col">
+<div class="w-full h-64 overflow-hidden mb-5">
+<img alt="Men Wearing Canvas Boots" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbkDMnI_TV7uuGpUlcKH4cisR_9vCZtm3ysf0Ma8WFGz8GW6sHxnidf_M2wCtrkyUyxv1ao55xwzh5rolKme_8a4FogiKxzHd5UaI3RsfhMjeWMDR2OeUr8DbUftRk5P5c640ojutZtQQ8y_-088hntxns1iCU3rS8NHbtmDDTd2vafHlpmX4t3wrNwmE69fa8ePdaXg6YVuEih1hOcAIhkk_CIAbinTrxpMOtZI0nLe5bMrgISFs"/>
+</div>
+<div class="text-xs text-neutral-400 mb-2">
+          Post date: <span class="text-[#357169] font-medium">01 nov, 2020</span>
+</div>
+<h3 class="text-base font-medium text-neutral-800 hover:text-black mb-3 cursor-pointer">
+          Men Wearing Canvas Boots
+        </h3>
+<p class="text-xs text-neutral-500 leading-relaxed font-light mb-6 flex-grow">
+          It is accompanied by a case that can contain up to three different diffusers and can be used for dry ....
+        </p>
+<div>
+<a class="inline-block border border-neutral-300 hover:border-neutral-800 text-neutral-700 hover:text-neutral-900 px-5 py-2 text-[11px] font-medium tracking-wider uppercase transition" href="#">
+            Continue Reading
+          </a>
+</div>
+</article>
+</div>
+</section>
+<!-- END: BlogSection -->
+<!-- BEGIN: InstagramGalleryStrip -->
+<section class="w-full overflow-hidden">
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 h-52 sm:h-60">
+<div class="h-full overflow-hidden">
+<img alt="Interior 1" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdqa-lecH6cFHUexXwsHfflu1taQVseCMWqZ_Wu9NWdnTUrH_2HZMahKY4fEuGlHGTpef_r_TME12xxE6eELPzuwl4mZT6UfyUr4VYz4N8msGKwCxuDN_4uG9dVFMiKflRJeVoA2p2egoasum8UMgKNV1TPOoTgYGZyfEGyGwoK1j0nxtl9ue5mIFOsm2P2cPD4NVV1sfcxC_yMEJjo7qxx4HpwGilMydNNdKs1xZoJP0QzG3EfU4"/>
+</div>
+<div class="h-full overflow-hidden">
+<img alt="Interior 2" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdGqikarXxk57gD0OLESXRzESZRrBWTJMwqpx9zPI8j4MS9_VebvlTenG8myelNEnsjcbYb6zczoOr_EHvUdjAitbNe0i8yyQBy5NpHwNN8cq580cESFq3WzPhdzKSLfibkL9kFe1O6sMFl4J4mEcmwLz2BpEkbbxL5t3VYPSrnLL50wh7NxVCdCIZR4xgdR7Zd-yTaAwdXVNzdxN1w8NnjzlfGKAIeOXJWulWWDhq9GJ0UgdUnz0"/>
+</div>
+<div class="h-full overflow-hidden">
+<img alt="Interior 3" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTIH4DvLJ5ZC9csQTuLloq0Hhz7XTSn_go8ug_cEAJhki8yxunS2eZUCPaLblqY89jmX-EwiXfB-tLu1DfRekYcVn9vE26siFa-Zbx1IA2GdnPNhHYtMfcImZWvyqLFdQRqfYtrmZV_Cdg8WhS_GD1l4JDErlXp-fQ6BZhO2H-0vDzURoGZHtAGa_tGqiCxXVnXq11uIFtct5sbDCXTFWcCdB1xGkNRaBD0quQI-oyWXHgQ8QB4q0"/>
+</div>
+<div class="h-full overflow-hidden">
+<img alt="Interior 4" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnl0KPE2dWph5RP6RJfQzZpa7a5HZD1_oHo8gIxWj2_Wpceq9cPTnUGNfXYupejMJxAiO69DkamxKa-bBPy4PZ-iLRxG5JFkgSFqyfGNQ4Fc2Pw2o9SQzLfQdj5nROvWejI3QKXaFjD9naxh6k413XsOv1UPrHobkhrDu4lZtOyU_YPiXsGHkpCSAU5avtdbIXF1bxXyufV4lDHGsF4k-hoFBSu70qspJkBr_nEOkTmvUMyOBQVPA"/>
+</div>
+<div class="h-full overflow-hidden">
+<img alt="Interior 5" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7N6BMUmA2JUnaYLYhg1vLMLVnrOgHOgrgANHmBg9FmBgRsIH8l67WNpdJIAJ-ooZC4xWmYRYsFhyUTTeHKRZUYK6-8hEPNMjF5uDbhyTq3oZKhMAZ-lKQ0vDVC01bxcNShpB642OYej40xXdKHDSw1RrrrUspTdipGq4E6aH77H_asUYzCxXpv92Oa01fSPJd4hjKOlubGRWTh9vCB06GZt2EtENmh36eN9z4l8KcI2dRyEkk6QU"/>
+</div>
+<div class="h-full overflow-hidden">
+<img alt="Interior 6" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiCWyWQjbErvS0-_RX9CSIdqY52OzY3Wf_czESjVE231BMzmD96kkVcz1koqh5hfaAowXS3GURnEI_cdw0rCt2OIEcqG1dgfxJU9jwf_gU56qdR0hJslzPrcr17DDg7QD4UFpewtypTUPMJ23tFHCVAN74bVndBRMqjYudBjx4O9ueLgAQsv1J2kRj5Ob4MHyR63xdG_d-19oPJahJ5uXNLeCHOURTscy_2KfPWHhX2oksczGDcME"/>
+</div>
+</div>
+</section>
+<!-- END: InstagramGalleryStrip -->
+<!-- BEGIN: MainFooter -->
+<footer class="w-full bg-white py-12 relative border-t border-neutral-100">
+<div class="max-w-7xl mx-auto px-6 sm:px-8 flex flex-col md:flex-row items-center justify-between text-xs text-neutral-500">
+<!-- Left Copyright -->
+<div class="mb-4 md:mb-0">
+        Copyright © <span class="text-neutral-700 font-medium">Agota</span> – ThemePure. All Rights Reserved.
+      </div>
+<!-- Right Links -->
+<div class="flex items-center space-x-6 text-[11px] tracking-wide">
+<a class="hover:text-neutral-900 transition" href="#">Site Map</a>
+<a class="hover:text-neutral-900 transition" href="#">Search Terms</a>
+<a class="hover:text-neutral-900 transition" href="#">Advanced Search</a>
+<a class="hover:text-neutral-900 transition" href="#">Contact us</a>
+</div>
+</div>
+<!-- Scroll To Top Floating Button -->
+<a aria-label="Scroll to top" class="absolute right-6 sm:right-8 -top-5 w-10 h-10 bg-white border border-neutral-200 text-neutral-600 hover:text-black hover:border-black flex items-center justify-center shadow-sm transition" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M5 15l7-7 7 7"></path>
+</svg>
+</a>
+</footer>
+<!-- END: MainFooter -->
+</body></html>
