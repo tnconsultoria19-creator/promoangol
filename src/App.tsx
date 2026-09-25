@@ -140,7 +140,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    if (session && activeView === "portal") {
+    if (session && activeView === "portal" && session.token !== "__PREVIEW__") {
       syncRoleData();
     }
   }, [session, activeView]);
@@ -149,7 +149,9 @@ export default function App() {
   // ACTIONS HANDLERS
   // -------------------------------------------------------------
   const handleLogout = () => {
-    fetch("/api/auth/logout", { method: "POST" });
+    if (session?.token !== "__PREVIEW__") {
+      fetch("/api/auth/logout", { method: "POST" });
+    }
     localStorage.removeItem("promoangol_session");
     setSession(null);
     setActiveView("home");
@@ -162,9 +164,97 @@ export default function App() {
   };
 
   const handleAuthSuccess = (newSession: UserSession) => {
+    if (newSession.token === "__PREVIEW__") {
+      if (newSession.role === "MEMBER") {
+        setMemberSummary({
+          profile: {
+            full_name: "Cliente PromoAngol",
+            member_number: "PA-000000",
+            plan_name: "Preferred",
+          },
+          balances: {
+            available_points: 8450,
+            pending_points: 1200,
+            reserved_points: 800,
+          },
+        });
+        setMemberTxList([
+          {
+            id: "preview-tx-1",
+            transaction_number: "PA-10482",
+            partner_name: "Hotel Alvalade",
+            listing_title: "Fim de semana Suite Deluxe",
+            amount_paid_kz: 80000,
+            points_to_release: 9600,
+            status: "VERIFIED",
+            created_at: "2026-09-25T14:20:00Z",
+          },
+          {
+            id: "preview-tx-2",
+            transaction_number: "PA-10467",
+            partner_name: "Amandla Spa",
+            listing_title: "Massagem de Aromaterapia",
+            amount_paid_kz: 20000,
+            points_to_release: 3000,
+            status: "PENDING_MEMBER_CONFIRMATION",
+            created_at: "2026-09-24T17:10:00Z",
+          },
+        ]);
+        setMemberLedger([
+          { id: "ledger-1", bucket: "AVAILABLE", direction: "CREDIT", points: 5000, reason: "Bónus de adesão", created_at: "2026-09-01" },
+          { id: "ledger-2", bucket: "PENDING", direction: "CREDIT", points: 1200, reason: "Compra em parceiro", created_at: "2026-09-24" },
+        ]);
+        setMemberRedemptions([]);
+        setMemberTransfersSent([]);
+        setMemberTransfersRecv([]);
+      }
+
+      if (newSession.role === "PARTNER_ADMIN") {
+        setPartnerSummary({
+          partner: { name: "Hotel Alvalade" },
+          stats: { todayCount: 18, todayVolume: 1260000, pendingConfirm: 4, pendingRedeem: 2 },
+          transactions: [
+            { id: "ptx-1", member_name: "Maria Domingos", member_number: "PA-304812", listing_title: "Suite Deluxe", transaction_number: "PA-20381", amount_paid_kz: 80000, status: "PENDING_MEMBER_CONFIRMATION", created_at: "2026-09-25T15:30:00Z" },
+            { id: "ptx-2", member_name: "António Silva", member_number: "PA-294601", listing_title: "Jantar de Gala", transaction_number: "PA-20374", amount_paid_kz: 25000, status: "VERIFIED", created_at: "2026-09-25T12:14:00Z" },
+          ],
+          listings: [
+            { id: "listing-preview-1", title: "Suite Deluxe", description: "Estadia para duas pessoas.", base_price_kz: 80000, status: "ACTIVE" },
+            { id: "listing-preview-2", title: "Jantar de Gala", description: "Experiência gastronómica.", base_price_kz: 25000, status: "ACTIVE" },
+          ],
+        });
+        setPartnerRedemptions([]);
+      }
+
+      if (newSession.role === "MASTER_ADMIN") {
+        setAdminSummary({
+          stats: { members: 2846, partners: 94, pendingRedemptions: 12, pendingTransfers: 7 },
+          ledger: [
+            { bucket: "AVAILABLE", sum: 1842500 },
+            { bucket: "PENDING", sum: 386400 },
+            { bucket: "RESERVED", sum: 74200 },
+          ],
+          audit: [
+            { action: "APPROVE_REDEMPTION", entity_id: "RED-1042", actor_id: "admin", created_at: "2026-09-25 16:42" },
+            { action: "PUBLISH_PROMOTION", entity_id: "PROMO-884", actor_id: "admin", created_at: "2026-09-25 15:18" },
+          ],
+        });
+        setAdminMembers([]);
+        setAdminPartners([]);
+        setAdminPromotions([]);
+        setAdminListings([]);
+        setAdminRedemptions([]);
+        setAdminTransfers([]);
+        setAdminSettlements([]);
+      }
+    }
+
     setSession(newSession);
     setActiveView("portal");
-    setToastSuccess(`Sessão iniciada como ${newSession.name}!`);
+    setToastSuccess(
+      newSession.token === "__PREVIEW__"
+        ? `Pré-visualização: ${newSession.name}`
+        : `Sessão iniciada como ${newSession.name}!`
+    );
   };
 
   // MEMBER HANDLERS
@@ -507,7 +597,14 @@ export default function App() {
 
         {/* AUTHENTICATED EXPERIENCE: PORTAL */}
         {activeView === "portal" && session && (
-          <div className="pt-24 min-h-[70vh]">
+          <div className={`portal-shell role-${session.role.toLowerCase()}`}>
+            {session.token === "__PREVIEW__" && (
+              <div className="preview-modebar content-width">
+                <span><strong>PRÉ-VISUALIZAÇÃO</strong> · está a ver a área {session.role === "MEMBER" ? "Cliente" : session.role === "PARTNER_ADMIN" ? "Parceiro" : "Master Admin"} sem palavras-passe.</span>
+                <button type="button" onClick={handleLogout}>Voltar a escolher área</button>
+              </div>
+            )}
+            <div className="pt-6 min-h-[70vh]">
             {session.role === "MEMBER" && (
               <MemberPortal
                 session={session}
@@ -560,6 +657,7 @@ export default function App() {
                 onRefresh={syncRoleData}
               />
             )}
+          </div>
           </div>
         )}
       </main>
