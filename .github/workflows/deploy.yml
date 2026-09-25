@@ -9,6 +9,7 @@ on:
 permissions:
   contents: read
 
+# Deployment pipeline: validate, build, migrate D1, then deploy the Worker.
 jobs:
   deploy:
     runs-on: ubuntu-latest
