@@ -230,3 +230,588 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .member-card, .wallet-card { min-width: 83vw; }
   .member-note h2 { font-size: 41px; }
 }
+
+
+/* ============================================================
+   PROMOANGOL DEALS PLATFORM REFINEMENT
+   Compact hero, stronger typography, image-led categories,
+   role-based preview, and marketplace-style promotion cards.
+   ============================================================ */
+
+body { font-size: 14px; }
+
+.hero-compact {
+  min-height: 360px !important;
+  align-items: stretch;
+}
+
+.hero-content-compact {
+  min-height: 360px;
+  padding: 92px 0 34px !important;
+  display: flex;
+  align-items: center;
+}
+
+.hero-copy-compact {
+  max-width: 620px;
+}
+
+.hero-compact .hero h1,
+.hero-compact h1 {
+  font-size: clamp(46px, 6vw, 72px);
+  line-height: .96;
+  margin: 14px 0 12px;
+}
+
+.hero-compact .hero-copy p,
+.hero-compact p {
+  max-width: 560px;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.hero-compact .hero-actions {
+  margin-top: 20px;
+}
+
+.hero-compact .hero-pagination {
+  display: none;
+}
+
+.hero-art-compact {
+  width: min(48vw, 610px);
+  max-width: 610px;
+  height: 100%;
+  right: 0;
+  bottom: 0;
+}
+
+.hero-photo-placeholder {
+  position: absolute;
+  inset: 26px 0 0 95px;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(26,43,73,.18), rgba(166,98,88,.24)),
+    url("https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1400&q=78")
+    center / cover;
+  box-shadow: -18px 0 38px rgba(0,0,0,.10);
+}
+
+.hero-photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(97,116,130,.72), rgba(97,116,130,.08) 55%, rgba(0,0,0,.15));
+}
+
+.hero-photo-label {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  max-width: 245px;
+  color: #fff;
+}
+
+.hero-photo-label span {
+  display: block;
+  font-size: 10px;
+  letter-spacing: .22em;
+  margin-bottom: 7px;
+}
+
+.hero-photo-label strong {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  line-height: 1;
+  font-weight: 400;
+}
+
+.hero-mini-block {
+  position: absolute;
+  background: rgba(255,255,255,.88);
+}
+
+.hero-mini-block-one {
+  width: 150px;
+  height: 72px;
+  right: 0;
+  bottom: 0;
+}
+
+.hero-mini-block-two {
+  width: 110px;
+  height: 58px;
+  left: 66px;
+  bottom: 0;
+  background: rgba(166,93,80,.92);
+}
+
+.category-showcase {
+  padding: 34px 0 46px;
+  background: #fff;
+}
+
+.category-showcase-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: end;
+  margin-bottom: 18px;
+}
+
+.category-showcase-head h2 {
+  margin: 8px 0 0;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(30px, 4.2vw, 46px);
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: -.035em;
+  color: #1c1c1c;
+}
+
+.category-showcase-note {
+  max-width: 260px;
+  color: #7d7771;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.category-showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.category-showcase-card {
+  position: relative;
+  min-height: 190px;
+  overflow: hidden;
+  text-align: left;
+  padding: 20px;
+  color: #fff;
+  background: #1a2b49;
+}
+
+.category-showcase-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .45s ease;
+}
+
+.category-showcase-card:hover img {
+  transform: scale(1.04);
+}
+
+.category-showcase-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.62));
+}
+
+.category-showcase-content {
+  position: relative;
+  z-index: 2;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.category-showcase-content small {
+  font-size: 9px;
+  letter-spacing: .18em;
+  font-weight: 600;
+}
+
+.category-showcase-content strong {
+  max-width: 200px;
+  font-family: 'Playfair Display', serif;
+  font-size: 30px;
+  line-height: .98;
+  font-weight: 400;
+}
+
+.category-showcase-content em {
+  font-style: normal;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+
+.category-showcase-content em span {
+  margin-left: 5px;
+  font-size: 14px;
+}
+
+.category-photo-terracotta { background: #a66258; }
+.category-photo-teal { background: #357169; }
+.category-photo-navy { background: #1a2b49; }
+.category-photo-gold { background: #cba557; }
+
+.promo-market-card {
+  display: block;
+  width: 100%;
+  padding: 0;
+  background: #fff;
+  text-align: left;
+  color: #1c1c1c;
+}
+
+.promo-market-image {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  background: #f4f2ef;
+}
+
+.promo-market-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .45s ease;
+}
+
+.promo-market-card:hover .promo-market-image img {
+  transform: scale(1.035);
+}
+
+.promo-market-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 5px 8px;
+  color: #fff;
+  background: #e53935;
+  font-size: 9px;
+  letter-spacing: .12em;
+}
+
+.promo-market-save {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  max-width: calc(100% - 24px);
+  padding: 7px 10px;
+  background: rgba(255,255,255,.94);
+  font-size: 9px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.promo-market-save strong { font-size: 11px; }
+
+.promo-market-body {
+  display: block;
+  padding: 13px 0 0;
+}
+
+.promo-market-body small {
+  display: block;
+  margin-bottom: 5px;
+  color: #357169;
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.promo-market-body > strong {
+  display: block;
+  min-height: 42px;
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  line-height: 1.02;
+  font-weight: 400;
+}
+
+.promo-market-price {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+  margin-top: 10px;
+  padding-top: 9px;
+  border-top: 1px solid var(--border);
+}
+
+.promo-market-price b {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.promo-market-price em {
+  color: #357169;
+  font-size: 11px;
+  font-style: normal;
+}
+
+.auth-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(24, 24, 24, .58);
+  backdrop-filter: blur(7px);
+}
+
+.auth-modal {
+  position: relative;
+  width: min(760px, 100%);
+  background: #fff;
+  border: 1px solid #e9e7e5;
+  box-shadow: 0 28px 80px rgba(0,0,0,.18);
+}
+
+.auth-role-modal {
+  padding: 38px;
+}
+
+.auth-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  font-size: 26px;
+  font-weight: 300;
+  color: #8b857f;
+}
+
+.auth-intro {
+  max-width: 600px;
+  margin-bottom: 24px;
+}
+
+.auth-intro h2 {
+  margin: 8px 0 8px;
+  font-family: 'Playfair Display', serif;
+  font-size: 42px;
+  line-height: .98;
+  font-weight: 400;
+  color: #1c1c1c;
+}
+
+.auth-intro p {
+  max-width: 560px;
+  margin: 0;
+  color: #706b65;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.auth-role-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.auth-role-card {
+  min-height: 215px;
+  padding: 19px;
+  text-align: left;
+  border: 1px solid #e9e7e5;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.auth-role-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(0,0,0,.07);
+}
+
+.auth-role-card.is-selected {
+  border-color: #1c1c1c;
+  box-shadow: inset 0 0 0 1px #1c1c1c;
+}
+
+.auth-role-card.auth-role-client { background: #fbfaf8; }
+.auth-role-card.auth-role-partner { background: #eef4f2; }
+.auth-role-card.auth-role-admin { background: #1a2b49; color: #fff; border-color: #1a2b49; }
+
+.auth-role-label {
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  opacity: .65;
+}
+
+.auth-role-card strong {
+  display: block;
+  margin-top: auto;
+  margin-bottom: 8px;
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  line-height: 1;
+  font-weight: 400;
+}
+
+.auth-role-card > span:nth-child(3) {
+  display: block;
+  min-height: 62px;
+  font-size: 13px;
+  line-height: 1.45;
+  opacity: .76;
+}
+
+.auth-role-card em {
+  display: block;
+  margin-top: 15px;
+  font-style: normal;
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.auth-preview-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-top: 18px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border);
+}
+
+.auth-preview-footer > span {
+  color: #8b857f;
+  font-size: 9px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+
+.auth-preview-button {
+  padding: 11px 20px;
+  color: #fff;
+  background: #1c1c1c;
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.auth-preview-button:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+
+.portal-shell {
+  min-height: calc(100vh - 96px);
+  padding-top: 96px;
+  background:
+    linear-gradient(180deg, #fbfaf8 0, #fff 180px);
+}
+
+.portal-shell.role-master_admin {
+  background:
+    linear-gradient(180deg, #f6f3ed 0, #fff 180px);
+}
+
+.portal-shell.role-partner_admin {
+  background:
+    linear-gradient(180deg, #eef4f2 0, #fff 180px);
+}
+
+.portal-shell.role-member {
+  background:
+    linear-gradient(180deg, #f7f5f1 0, #fff 180px);
+}
+
+.preview-modebar {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 12px;
+  background: #1c1c1c;
+  color: #fff;
+  font-size: 11px;
+}
+
+.preview-modebar strong {
+  color: #cba557;
+  font-weight: 600;
+}
+
+.preview-modebar button {
+  color: #fff;
+  border-bottom: 1px solid rgba(255,255,255,.5);
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.portal-shell .text-xs { font-size: .82rem; }
+.portal-shell .text-[10px] { font-size: .72rem; }
+
+@media (max-width: 900px) {
+  .category-showcase-grid { grid-template-columns: repeat(2, 1fr); }
+  .category-showcase-head { align-items: start; flex-direction: column; }
+  .category-showcase-note { max-width: none; }
+  .auth-role-grid { grid-template-columns: 1fr; }
+  .auth-role-card { min-height: 150px; }
+}
+
+@media (max-width: 759px) {
+  .hero-compact { min-height: 320px !important; }
+  .hero-content-compact { min-height: 320px; padding: 88px 0 26px !important; }
+  .hero-copy-compact { max-width: 58%; }
+  .hero-compact h1 { font-size: 41px; }
+  .hero-compact p { font-size: 14px; max-width: 420px; }
+  .hero-art-compact { width: 58vw; opacity: .9; }
+  .hero-photo-placeholder { inset: 18px 0 0 20px; }
+  .hero-photo-label { left: 14px; bottom: 15px; }
+  .hero-photo-label strong { font-size: 22px; }
+  .category-showcase { padding: 28px 0 38px; }
+  .category-showcase-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+  }
+  .category-showcase-grid::-webkit-scrollbar { display: none; }
+  .category-showcase-card {
+    flex: 0 0 78vw;
+    min-width: 78vw;
+    min-height: 180px;
+    scroll-snap-align: start;
+  }
+  .promo-market-image { height: 240px; }
+  .auth-overlay { padding: 12px; align-items: end; }
+  .auth-role-modal { padding: 28px 20px 20px; max-height: 94vh; overflow: auto; }
+  .auth-intro h2 { font-size: 36px; }
+  .preview-modebar {
+    width: calc(100% - 24px);
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .portal-shell { padding-top: 86px; }
+}
+
+@media (max-width: 430px) {
+  .hero-compact { min-height: 300px !important; }
+  .hero-content-compact { min-height: 300px; padding-top: 80px !important; }
+  .hero-copy-compact { max-width: 66%; }
+  .hero-compact h1 { font-size: 35px; }
+  .hero-compact p { font-size: 13px; line-height: 1.45; }
+  .hero-actions { gap: 7px; }
+  .solid-light-btn, .ghost-light-btn { padding: 10px 14px; font-size: 9px; }
+}
