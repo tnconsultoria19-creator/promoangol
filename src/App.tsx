@@ -74,7 +74,7 @@ export default function App() {
     fetch("/api/catalog/promotions")
       .then(async (res) => {
         if (!res.ok) throw new Error("Catalog unavailable");
-        const data = await res.json();
+        const data = (await res.json()) as any;
         const rows = data.promotions || [];
         setPromotions(rows);
         setCatalogState(rows.length ? "ready" : "empty");
@@ -100,7 +100,7 @@ export default function App() {
       handleLogout();
       throw new Error("Sessão expirada. Por favor autentique-se novamente.");
     }
-    const data = await res.json();
+    const data = (await res.json()) as any;
     if (!res.ok) {
       throw new Error(data.message || "Erro de processamento no servidor.");
     }
