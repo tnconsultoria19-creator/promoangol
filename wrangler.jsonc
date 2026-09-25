@@ -3,6 +3,7 @@
   "name": "promoangol",
   "main": "src/worker.ts",
   "compatibility_date": "2026-09-25",
+  "workers_dev": true,
   "assets": {
     "binding": "ASSETS",
     "not_found_handling": "single-page-application",
