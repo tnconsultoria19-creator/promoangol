@@ -18,6 +18,15 @@ export const CatalogSection: React.FC<CatalogSectionProps> = ({
   onRefresh,
 }) => {
   const [activeCategory, setActiveCategory] = useState<string>(selectedCategory || "all");
+  const [visibleLimit, setVisibleLimit] = useState(8);
+
+  const categories = [
+    { id: "all", label: "Todas as Ofertas" },
+    { id: "Hotelaria", label: "Hotelaria & Resorts" },
+    { id: "Restaurantes", label: "Restaurantes" },
+    { id: "Beleza", label: "Spas & Beleza" },
+    { id: "Lazer", label: "Experiências" },
+  ];
 
   const filteredPromotions = useMemo(() => {
     if (activeCategory === "all") return promotions;
@@ -26,81 +35,94 @@ export const CatalogSection: React.FC<CatalogSectionProps> = ({
     );
   }, [promotions, activeCategory]);
 
+  const displayedPromotions = filteredPromotions.slice(0, visibleLimit);
+
   return (
-    <section className="content-width weekly-section" id="catalog">
-      <div className="section-heading">
-        <div>
-          <span className="eyebrow eyebrow-dark">ESTA SEMANA EM ANGOLA</span>
-          <h2>Catálogo em Destaque.</h2>
-          <p>
-            Promoções ativas com retorno garantido de valor. Todos os termos e benefícios
-            são controlados e auditados pela PromoAngol. 1 ponto acumulado = 1 Kz de recompensa real.
-          </p>
-        </div>
-        <button className="outline-btn" onClick={onRefresh}>
-          Atualizar Catálogo
-        </button>
+    <section className="max-w-7xl mx-auto px-6 sm:px-8 py-16 font-sans" id="catalog">
+      {/* Centered Editorial Header Matching Agota BestsellersSection */}
+      <div className="text-center max-w-2xl mx-auto mb-12">
+        <h2 className="text-3xl sm:text-4xl font-normal text-neutral-800 tracking-tight mb-3 font-serif">
+          Ofertas em Destaque
+        </h2>
+        <p className="text-neutral-500 text-xs sm:text-sm font-light">
+          Benefícios e recompensas comerciais ativas em estabelecimentos de referência em Luanda e no país.
+          1 Ponto = 1 Kz de recompensa real garantida.
+        </p>
       </div>
 
-      {/* Category Filter Pills (Minimalist inline tabs) */}
-      <div className="flex items-center gap-4 mb-8 overflow-x-auto pb-2 text-xs uppercase tracking-widest font-medium text-zinc-500">
-        <button
-          className={`pb-1 transition-colors ${activeCategory === "all" ? "text-zinc-950 font-bold border-b border-zinc-950" : "hover:text-zinc-900"}`}
-          onClick={() => setActiveCategory("all")}
-        >
-          Todos
-        </button>
-        <button
-          className={`pb-1 transition-colors ${activeCategory === "Hotelaria" ? "text-zinc-950 font-bold border-b border-zinc-950" : "hover:text-zinc-900"}`}
-          onClick={() => setActiveCategory("Hotelaria")}
-        >
-          Hotelaria & Resorts
-        </button>
-        <button
-          className={`pb-1 transition-colors ${activeCategory === "Restaurantes" ? "text-zinc-950 font-bold border-b border-zinc-950" : "hover:text-zinc-900"}`}
-          onClick={() => setActiveCategory("Restaurantes")}
-        >
-          Restaurantes
-        </button>
-        <button
-          className={`pb-1 transition-colors ${activeCategory === "Beleza" ? "text-zinc-950 font-bold border-b border-zinc-950" : "hover:text-zinc-900"}`}
-          onClick={() => setActiveCategory("Beleza")}
-        >
-          Spas & Beleza
-        </button>
+      {/* Category Filter Minimalist Tabs */}
+      <div className="flex items-center justify-center flex-wrap gap-6 sm:gap-10 mb-12 text-xs uppercase tracking-widest font-medium text-neutral-400">
+        {categories.map((cat) => {
+          const isActive = activeCategory.toLowerCase() === cat.id.toLowerCase();
+          return (
+            <button
+              key={cat.id}
+              onClick={() => {
+                setActiveCategory(cat.id);
+                setVisibleLimit(8);
+              }}
+              className={`pb-1 transition-colors ${
+                isActive
+                  ? "text-neutral-900 border-b border-neutral-900 font-semibold"
+                  : "hover:text-neutral-900"
+              }`}
+            >
+              {cat.label}
+            </button>
+          );
+        })}
       </div>
 
-      {catalogState === "ready" && filteredPromotions.length > 0 ? (
-        <div className="promo-rail">
-          {filteredPromotions.map((promotion, idx) => (
-            <PromoCard
-              key={promotion.id}
-              promotion={promotion}
-              index={idx}
-              onSelect={onSelectPromotion}
-            />
-          ))}
-        </div>
+      {/* Products Grid (4 items per row matching Agota) */}
+      {catalogState === "ready" && displayedPromotions.length > 0 ? (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10 mb-16">
+            {displayedPromotions.map((promotion, idx) => (
+              <PromoCard
+                key={promotion.id}
+                promotion={promotion}
+                index={idx}
+                onSelect={onSelectPromotion}
+              />
+            ))}
+          </div>
+
+          {filteredPromotions.length > visibleLimit && (
+            <div className="text-center">
+              <button
+                onClick={() => setVisibleLimit((prev) => prev + 8)}
+                className="inline-block border border-neutral-300 hover:border-neutral-900 text-neutral-700 hover:text-neutral-900 px-8 py-3 text-xs tracking-widest font-medium uppercase transition cursor-pointer"
+              >
+                Ver Mais Ofertas
+              </button>
+            </div>
+          )}
+        </>
       ) : catalogState === "loading" ? (
-        <div className="py-20 text-center text-xs tracking-widest uppercase text-zinc-400">
-          A carregar ofertas ativas da base de dados...
+        <div className="py-24 text-center text-xs tracking-widest uppercase text-neutral-400">
+          A carregar catálogo oficial da base de dados...
         </div>
       ) : (
-        <div className="catalog-empty">
-          <div>
-            <span className="eyebrow eyebrow-dark">
-              {catalogState === "error" ? "CATÁLOGO TEMPORARIAMENTE OFFLINE" : "CATÁLOGO SEMANAL"}
-            </span>
-            <h3>
-              {catalogState === "error"
-                ? "A carregar do cluster Cloudflare D1."
-                : "Sem ofertas disponíveis nesta categoria."}
-            </h3>
-            <p>
-              As ofertas oficiais publicadas pelo Master Admin surgem aqui com cálculos em tempo real.
-            </p>
-          </div>
-          <span className="catalog-rule" aria-hidden="true" />
+        <div className="py-20 text-center max-w-lg mx-auto border border-neutral-200 p-8 bg-neutral-50 mb-16">
+          <span className="text-[10px] tracking-widest uppercase font-semibold text-[#357169] block mb-2">
+            Catálogo PromoAngol
+          </span>
+          <h3 className="text-2xl font-serif text-neutral-800 mb-2">
+            {catalogState === "error"
+              ? "Base de dados temporariamente indisponível"
+              : "Sem ofertas ativas nesta categoria"}
+          </h3>
+          <p className="text-xs text-neutral-500 mb-6 font-light leading-relaxed">
+            {catalogState === "error"
+              ? "Por favor recarregue a ligação com o cluster Cloudflare."
+              : "Novas campanhas estão a ser preparadas pelos nossos parceiros credenciados."}
+          </p>
+          <button
+            onClick={onRefresh}
+            className="inline-block border border-neutral-400 hover:border-neutral-900 text-neutral-800 px-6 py-2.5 text-xs tracking-widest uppercase font-medium transition"
+          >
+            Recarregar
+          </button>
         </div>
       )}
     </section>

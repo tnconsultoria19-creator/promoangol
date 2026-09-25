@@ -3,39 +3,44 @@ import React from "react";
 export const GalleryStrip: React.FC = () => {
   const images = [
     {
-      src: "https://lh3.googleusercontent.com/aida-public/AB6AXuByIyu_hzzSE_PellYXZyPgnqpUSFY-iWv6RmO-zVEK0FX9eXnAlbqFp_utSyz7zbu7XlUflLHbJB8tIF767JkMp4eg_1J7XeXqazLc4uhVni24nQrZdGG74T1Tl6pkycZewcoHXA2THHsQk3siVogMWw_hnKgGEHj4G6H2-smQ5KMQRrUQGxYQgrlrtkhfuvUWWZju1xkudsIY62qV7mh3PJ1z5zppXjj8YIHxxfE8BBByQKzj88A",
-      alt: "Lounge Executivo",
+      src: "https://lh3.googleusercontent.com/aida-public/AB6AXuBdqa-lecH6cFHUexXwsHfflu1taQVseCMWqZ_Wu9NWdnTUrH_2HZMahKY4fEuGlHGTpef_r_TME12xxE6eELPzuwl4mZT6UfyUr4VYz4N8msGKwCxuDN_4uG9dVFMiKflRJeVoA2p2egoasum8UMgKNV1TPOoTgYGZyfEGyGwoK1j0nxtl9ue5mIFOsm2P2cPD4NVV1sfcxC_yMEJjo7qxx4HpwGilMydNNdKs1xZoJP0QzG3EfU4",
+      alt: "Ambiente Interior 1",
     },
     {
-      src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD8FU3bg_cLXTO0TN-NtGKhCqUNIN4RFoggrSjAwAvWXtBL-Mgave8GbtejJ00ppVsZPChmqviodghuzFCytfUw7b-8qrHfEVedX0Y1SOdyYr2aNL7kGfBgGI0j_LCK41rU4iWPdkXLG9IfUs1lO8cgpximzymeAddKFI2xMf65Y58m6oOM4hs06-LMDWNPd0F1nMcdCVBetZ5D_ac9PeGhslOofFMwt3hecrKhDFDcTpv7kA8vpus",
-      alt: "Cozinha e Sabores",
+      src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAdGqikarXxk57gD0OLESXRzESZRrBWTJMwqpx9zPI8j4MS9_VebvlTenG8myelNEnsjcbYb6zczoOr_EHvUdjAitbNe0i8yyQBy5NpHwNN8cq580cESFq3WzPhdzKSLfibkL9kFe1O6sMFl4J4mEcmwLz2BpEkbbxL5t3VYPSrnLL50wh7NxVCdCIZR4xgdR7Zd-yTaAwdXVNzdxN1w8NnjzlfGKAIeOXJWulWWDhq9GJ0UgdUnz0",
+      alt: "Ambiente Interior 2",
     },
     {
-      src: "https://lh3.googleusercontent.com/aida-public/AB6AXuCoN979QBMSJ0LXT46F0sjPnEbB6t_pjoPuGeiEoNP6vkKNfy7-GCYIt5qga6vrMVVSHXIN2OXLX9WWKqyvZRaMsLoeQAEQ_fr0HUF806AOuxH_RJ2JW_YEu143gVcXVqp7tmSMFChWYBbX5WIyRIYFsHt1-74Ip_KN40H8bZqX7CK-ha6DNSwwZRlF3Dx_3QbxE1FeV-Hd20rgDGXOeO7bjDABuk7hT9nSKAqi1iTBxFJPHNAzs38",
-      alt: "Ambiente e Iluminação",
+      src: "https://lh3.googleusercontent.com/aida-public/AB6AXuCTIH4DvLJ5ZC9csQTuLloq0Hhz7XTSn_go8ug_cEAJhki8yxunS2eZUCPaLblqY89jmX-EwiXfB-tLu1DfRekYcVn9vE26siFa-Zbx1IA2GdnPNhHYtMfcImZWvyqLFdQRqfYtrmZV_Cdg8WhS_GD1l4JDErlXp-fQ6BZhO2H-0vDzURoGZHtAGa_tGqiCxXVnXq11uIFtct5sbDCXTFWcCdB1xGkNRaBD0quQI-oyWXHgQ8QB4q0",
+      alt: "Ambiente Interior 3",
     },
     {
-      src: "https://lh3.googleusercontent.com/aida-public/AB6AXuA4pEuljXiG_9GfuggxchKaqRI5Vzg5lkqveW8g6RhTKkyd6oWeVqQ19J8UTn00ORKZApRguQiURKoTh88v-mIUDht-Xk4U9gfFmacd6vD_qDb7ySKN2CcK0u4KvZ7Rb73UWRv90_gZu9qNWMI1AUPPE17ceGwt7BYSY0KIdtucLa7X03ZTojsdoizIaF35NtfXVo3jlyik_wH2jPvmQmyaslS6IHTSkicPHvLYOEqdVG94DtoCoGw",
-      alt: "Conforto e Estilo",
+      src: "https://lh3.googleusercontent.com/aida-public/AB6AXuCnl0KPE2dWph5RP6RJfQzZpa7a5HZD1_oHo8gIxWj2_Wpceq9cPTnUGNfXYupejMJxAiO69DkamxKa-bBPy4PZ-iLRxG5JFkgSFqyfGNQ4Fc2Pw2o9SQzLfQdj5nROvWejI3QKXaFjD9naxh6k413XsOv1UPrHobkhrDu4lZtOyU_YPiXsGHkpCSAU5avtdbIXF1bxXyufV4lDHGsF4k-hoFBSu70qspJkBr_nEOkTmvUMyOBQVPA",
+      alt: "Ambiente Interior 4",
     },
     {
-      src: "https://lh3.googleusercontent.com/aida-public/AB6AXuDbwYZvE0I1JQwb-2dsIVv7f5H10doPsF3nn_DRYIvPyOhaE4g4QwLK-aHEbksgzkRRouaA6jfGD33V5MSsQXwHg-15d-V-rYSxjx1DuxEw50spBw95MBRmdI0Fu-a8QL3J2HHkrSLM8aUsLQjbW3TsBE-zLaycswPjQ3wPUX6CplySq53sXvuy5K-BgDoJrQNEHNDa7FSlMLA0DW2TuxWCSAs5Bo2jxjrJOmAvs4RruUDazRR6Th8",
-      alt: "Mobiliário e Design",
+      src: "https://lh3.googleusercontent.com/aida-public/AB6AXuB7N6BMUmA2JUnaYLYhg1vLMLVnrOgHOgrgANHmBg9FmBgRsIH8l67WNpdJIAJ-ooZC4xWmYRYsFhyUTTeHKRZUYK6-8hEPNMjF5uDbhyTq3oZKhMAZ-lKQ0vDVC01bxcNShpB642OYej40xXdKHDSw1RrrrUspTdipGq4E6aH77H_asUYzCxXpv92Oa01fSPJd4hjKOlubGRWTh9vCB06GZt2EtENmh36eN9z4l8KcI2dRyEkk6QU",
+      alt: "Ambiente Interior 5",
+    },
+    {
+      src: "https://lh3.googleusercontent.com/aida-public/AB6AXuDiCWyWQjbErvS0-_RX9CSIdqY52OzY3Wf_czESjVE231BMzmD96kkVcz1koqh5hfaAowXS3GURnEI_cdw0rCt2OIEcqG1dgfxJU9jwf_gU56qdR0hJslzPrcr17DDg7QD4UFpewtypTUPMJ23tFHCVAN74bVndBRMqjYudBjx4O9ueLgAQsv1J2kRj5Ob4MHyR63xdG_d-19oPJahJ5uXNLeCHOURTscy_2KfPWHhX2oksczGDcME",
+      alt: "Ambiente Interior 6",
     },
   ];
 
   return (
-    <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 border-t border-b border-neutral-200 overflow-hidden bg-neutral-100">
-      {images.map((img, i) => (
-        <div key={i} className="relative aspect-square overflow-hidden group">
-          <img
-            alt={img.alt}
-            className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 filter brightness-95 group-hover:brightness-105"
-            src={img.src}
-          />
-          <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
-        </div>
-      ))}
-    </div>
+    <section className="w-full overflow-hidden">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 h-52 sm:h-60">
+        {images.map((img, i) => (
+          <div key={i} className="h-full overflow-hidden">
+            <img
+              alt={img.alt}
+              className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+              src={img.src}
+            />
+          </div>
+        ))}
+      </div>
+    </section>
   );
 };

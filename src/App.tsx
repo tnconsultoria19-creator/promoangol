@@ -13,6 +13,9 @@ import { AuthModal } from "./components/AuthModal";
 import { MemberPortal } from "./components/MemberPortal";
 import { PartnerPortal } from "./components/PartnerPortal";
 import { AdminPortal } from "./components/AdminPortal";
+import { PartnersSection } from "./components/PartnersSection";
+import { MembershipSection } from "./components/MembershipSection";
+import { HowItWorksSection } from "./components/HowItWorksSection";
 import type { Promotion, UserSession } from "./types";
 
 export default function App() {
@@ -455,6 +458,48 @@ export default function App() {
               selectedCategory={selectedCategory}
               onSelectPromotion={(promo) => setSelectedPromo(promo)}
               onRefresh={fetchCatalog}
+            />
+            <GalleryStrip />
+          </div>
+        )}
+
+        {/* PUBLIC EXPERIENCE: PARTNERS */}
+        {activeView === "partners" && (
+          <div>
+            <PartnersSection
+              promotions={promotions}
+              onSelectPromotion={(promo) => setSelectedPromo(promo)}
+              onExploreMembership={() => {
+                if (session) setActiveView("portal");
+                else handleOpenAuth("register");
+              }}
+            />
+            <GalleryStrip />
+          </div>
+        )}
+
+        {/* PUBLIC EXPERIENCE: MEMBERSHIP */}
+        {activeView === "membership" && (
+          <div>
+            <MembershipSection
+              onJoinPlan={(_planCode) => {
+                if (session) setActiveView("portal");
+                else handleOpenAuth("register");
+              }}
+            />
+            <GalleryStrip />
+          </div>
+        )}
+
+        {/* PUBLIC EXPERIENCE: HOW IT WORKS */}
+        {activeView === "how" && (
+          <div>
+            <HowItWorksSection
+              onJoin={() => {
+                if (session) setActiveView("portal");
+                else handleOpenAuth("register");
+              }}
+              onExploreCatalog={() => setActiveView("catalog")}
             />
             <GalleryStrip />
           </div>

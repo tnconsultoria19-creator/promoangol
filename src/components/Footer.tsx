@@ -5,33 +5,52 @@ interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
-  return (
-    <footer className="site-footer" id="footer">
-      <div className="content-width">
-        <div className="footer-main">
-          <div>
-            <div className="footer-brand font-serif">PROMOANGOL</div>
-            <p>
-              O ecossistema oficial de benefícios e recompensas comerciais de Angola.
-              Compre nos parceiros aderentes, acumule pontos reais (1 Ponto = 1 Kz) e
-              aproveite mais do seu estilo de vida em Luanda e no país.
-            </p>
-          </div>
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
-          <div className="footer-links">
-            <button onClick={() => onNavigate("home")}>Início</button>
-            <button onClick={() => onNavigate("catalog")}>Catálogo Semanal</button>
-            <button onClick={() => onNavigate("partners")}>Empresas Parceiras</button>
-            <button onClick={() => onNavigate("membership")}>Planos de Adesão</button>
-            <button onClick={() => onNavigate("how")}>Como Funciona</button>
-          </div>
+  return (
+    <footer className="w-full bg-white py-12 relative border-t border-neutral-100 font-sans" id="footer">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 flex flex-col md:flex-row items-center justify-between text-xs text-neutral-500">
+        {/* Left Copyright */}
+        <div className="mb-4 md:mb-0">
+          Copyright © <span className="text-neutral-700 font-medium">PromoAngol</span> – Recompensas & Benefícios em Angola. Todos os direitos reservados.
         </div>
 
-        <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} PROMOANGOL. TODOS OS DIREITOS RESERVADOS.</span>
-          <span>REPÚBLICA DE ANGOLA · LUANDA</span>
+        {/* Right Links */}
+        <div className="flex items-center flex-wrap justify-center gap-6 text-[11px] tracking-wide">
+          <button onClick={() => onNavigate("home")} className="hover:text-neutral-900 transition">
+            Início
+          </button>
+          <button onClick={() => onNavigate("catalog")} className="hover:text-neutral-900 transition">
+            Ofertas
+          </button>
+          <button onClick={() => onNavigate("partners")} className="hover:text-neutral-900 transition">
+            Parceiros
+          </button>
+          <button onClick={() => onNavigate("membership")} className="hover:text-neutral-900 transition">
+            Adesão
+          </button>
+          <button onClick={() => onNavigate("how")} className="hover:text-neutral-900 transition">
+            Como Funciona
+          </button>
+          <button onClick={scrollToTop} className="hover:text-neutral-900 transition">
+            Contacto
+          </button>
         </div>
       </div>
+
+      {/* Scroll To Top Floating Button from Agota master reference */}
+      <button
+        type="button"
+        aria-label="Voltar ao topo"
+        onClick={scrollToTop}
+        className="absolute right-6 sm:right-8 -top-5 w-10 h-10 bg-white border border-neutral-200 text-neutral-600 hover:text-black hover:border-black flex items-center justify-center shadow-sm transition cursor-pointer"
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <path d="M5 15l7-7 7 7" />
+        </svg>
+      </button>
     </footer>
   );
 };
