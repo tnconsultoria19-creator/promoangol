@@ -1,0 +1,20 @@
+@media (max-width: 759px) {
+  .feature-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding-bottom: 5px;
+  }
+
+  .feature-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .feature-card {
+    flex: 0 0 78vw;
+    min-width: 78vw;
+    scroll-snap-align: start;
+  }
+}
