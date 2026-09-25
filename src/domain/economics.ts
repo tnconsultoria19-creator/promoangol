@@ -20,13 +20,38 @@ export interface PromotionEconomicsResult {
 }
 
 function assertNonNegative(value: number, label: string): void {
-  if (!Number.isFinite(value) || value < 0) throw new Error(`${label} must be a non-negative number`);
+  if (!Number.isFinite(value) || value < 0) {
+    throw new Error(label + " must be a non-negative number");
+  }
+}
+
+function assertPercent(value: number, label: string): void {
+  if (!Number.isFinite(value) || value < 0 || value > 100) {
+    throw new Error(label + " must be between 0 and 100");
+  }
+}
+
+function assertKz(value: number, label: string): void {
+  assertNonNegative(value, label);
+  if (!Number.isInteger(value)) throw new Error(label + " must be a whole Kz amount");
 }
 
 export function calculatePromotionEconomics(input: PromotionEconomicsInput): PromotionEconomicsResult {
-  assertNonNegative(input.purchaseAmountKz, "purchaseAmountKz");
+  assertKz(input.purchaseAmountKz, "purchaseAmountKz");
   assertNonNegative(input.commissionValue, "commissionValue");
   assertNonNegative(input.benefitValue ?? 0, "benefitValue");
+
+  if (input.commissionMode === "PERCENT_OF_PURCHASE") {
+    assertPercent(input.commissionValue, "commissionValue");
+  } else {
+    assertKz(input.commissionValue, "commissionValue");
+  }
+
+  if (input.benefitMode === "PERCENT_OF_COMMISSION") {
+    assertPercent(input.benefitValue ?? 0, "benefitValue");
+  } else {
+    assertKz(input.benefitValue ?? 0, "benefitValue");
+  }
 
   const commissionKz = Math.round(
     input.commissionMode === "FIXED_KZ"
@@ -34,7 +59,7 @@ export function calculatePromotionEconomics(input: PromotionEconomicsInput): Pro
       : input.purchaseAmountKz * (input.commissionValue / 100),
   );
 
-  if (input.commissionMode === "FIXED_KZ" && commissionKz > input.purchaseAmountKz) {
+  if (commissionKz > input.purchaseAmountKz) {
     throw new Error("Commission cannot exceed the purchase amount");
   }
 
@@ -53,13 +78,12 @@ export function calculatePromotionEconomics(input: PromotionEconomicsInput): Pro
       throw new Error("Unsupported benefit mode");
   }
 
-  // PromoAngol cannot grant a member more value than the commission it receives
-  // under this commercial model unless a future rule explicitly creates a funded subsidy.
   if (memberBenefitKz > commissionKz) {
     throw new Error("Member benefit exceeds partner commission");
   }
 
   const platformMarginKz = commissionKz - memberBenefitKz;
+
   return {
     commissionKz,
     memberBenefitKz,
