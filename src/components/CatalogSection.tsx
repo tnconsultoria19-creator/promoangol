@@ -38,20 +38,20 @@ export const CatalogSection: React.FC<CatalogSectionProps> = ({
   const displayedPromotions = filteredPromotions.slice(0, visibleLimit);
 
   return (
-    <section className="max-w-7xl mx-auto px-6 sm:px-8 py-16 font-sans" id="catalog">
+    <section className="max-w-7xl mx-auto px-6 sm:px-8 py-10 font-sans deals-catalog" id="catalog">
       {/* Centered Editorial Header Matching Agota BestsellersSection */}
       <div className="text-center max-w-2xl mx-auto mb-12">
-        <h2 className="text-3xl sm:text-4xl font-normal text-neutral-800 tracking-tight mb-3 font-serif">
+        <h2 className="text-4xl sm:text-5xl font-normal text-neutral-800 tracking-tight mb-3 font-serif">
           Ofertas em Destaque
         </h2>
-        <p className="text-neutral-500 text-xs sm:text-sm font-light">
+        <p className="text-neutral-500 text-sm sm:text-[15px] font-light leading-relaxed">
           Benefícios e recompensas comerciais ativas em estabelecimentos de referência em Luanda e no país.
           1 Ponto = 1 Kz de recompensa real garantida.
         </p>
       </div>
 
       {/* Category Filter Minimalist Tabs */}
-      <div className="flex items-center justify-center flex-wrap gap-6 sm:gap-10 mb-12 text-xs uppercase tracking-widest font-medium text-neutral-400">
+      <div className="flex items-center justify-center flex-wrap gap-5 sm:gap-8 mb-10 text-[11px] uppercase tracking-[.14em] font-medium text-neutral-400">
         {categories.map((cat) => {
           const isActive = activeCategory.toLowerCase() === cat.id.toLowerCase();
           return (
