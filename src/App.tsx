@@ -89,7 +89,7 @@ export default function App() {
   // -------------------------------------------------------------
   // SECURE API CLIENT
   // -------------------------------------------------------------
-  const apiCall = async (endpoint: string, options: RequestInit = {}) => {
+  const apiCall = async (endpoint: string, options: RequestInit = {}): Promise<any> => {
     if (!session) return null;
     const headers = new Headers(options.headers || {});
     headers.set("Authorization", `Bearer ${session.token}`);
