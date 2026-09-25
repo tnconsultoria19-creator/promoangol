@@ -12,7 +12,7 @@
     {
       "binding": "PROMOANGOL_DB",
       "database_name": "promoangol-db",
-      "database_id": "REPLACE_WITH_CLOUDFLARE_D1_DATABASE_ID",
+      "database_id": "d8107b9e-1c96-44ac-8dc7-2d8d80bed463",
       "migrations_dir": "migrations"
     }
   ],
